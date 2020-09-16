@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    color: colors.azul,
+    color: 'black',
   },
   inputIconSubmit: {
     paddingRight: 10,

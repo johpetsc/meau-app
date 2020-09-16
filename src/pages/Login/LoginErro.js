@@ -1,36 +1,21 @@
-// React Native Navigation Drawer – Example using Latest Navigation Version //
-// https://aboutreact.com/react-native-navigation-drawer //
 import * as React from 'react';
 import {Button, View, Text, SafeAreaView, StyleSheet, Dimensions} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import TextBox from '../../components/TextBoxComponents/TextBox';
-import Icon from 'react-native-vector-icons/Entypo';
 
 const Login = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
-      <View style={styles.inputContainer}>
-        <TextBox
-          campo={'Nome de usuário'}
-          icone={''}
-        />
-        <TextBox
-          campo={'Senha'}
-          icone={''}
-          seguro={true}
-        />
-      </View>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('LoginErro')}>
-        <Text style={styles.buttonText}>ENTRAR</Text>
-      </TouchableOpacity>
-      <View style={styles.socialContainer}>
-        <TouchableOpacity style={styles.facebookbutton}>
-          <Icon name={'facebook'} size={20} color={'#f7f7f7'}/>
-          <Text style={styles.buttonTextWhite}>    ENTRAR COM FACEBOOK</Text>
+      <Text style={styles.message}>Ops!</Text>
+      <View>
+        <Text style={styles.text}>Você não pode realizar esta ação sem possuir um cadastro.</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SecondPage')}>
+            <Text style={styles.buttonText}>FAZER CADASTRO</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.googlebutton}>
-          <Icon name={'google-'} size={20} color={'#f7f7f7'}/>
-          <Text style={styles.buttonTextWhite}>    ENTRAR COM GOOGLE</Text>
+      </View>
+      <View>
+        <Text style={styles.text}>Já possui cadastro?</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
+            <Text style={styles.buttonText}>FAZER LOGIN</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -40,6 +25,8 @@ const Login = ({navigation}) => {
 const styles = StyleSheet.create({
   button:{
     backgroundColor: '#88c9bf',
+    marginTop: 16,
+    marginBottom: 44,
     width: 232,
     height: 40,
     alignItems: 'center',
@@ -81,10 +68,19 @@ const styles = StyleSheet.create({
     fontFamily: 'roboto',
     fontSize: 12
   },
-  buttonTextWhite:{
-    color: '#f7f7f7',
+  text:{
+    color: '#757575',
+    fontSize: 14,
     fontFamily: 'roboto',
-    fontSize: 12
+    textAlign: 'center'
+
+  },
+  message:{
+    color: '#88c9bf',
+    margin: 52,
+    alignSelf: 'center',
+    fontFamily: 'roboto',
+    fontSize: 53
   },
 });
 
