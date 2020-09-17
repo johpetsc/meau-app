@@ -1,5 +1,3 @@
-// React Native Navigation Drawer – Example using Latest Navigation Version //
-// https://aboutreact.com/react-native-navigation-drawer //
 import * as React from 'react';
 import {Button, View, Text, SafeAreaView, ScrollView, StyleSheet, Dimensions} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -132,7 +130,7 @@ const styles = StyleSheet.create({
     color: '#757575',
     fontFamily: 'roboto',
     fontSize: 14
-    
+
   },
   buttonText:{
     color: '#434343',

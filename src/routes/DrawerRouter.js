@@ -4,6 +4,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import LoginStack from './LoginStack';
 import CadastroPessoalStack from './CadastroPessoalStack';
+import CadastroAnimalStack from './CadastroAnimalStack';
 
 const Drawer = createDrawerNavigator();
 
@@ -20,10 +21,15 @@ export default function DrawerRouter() {
         component={LoginStack}
       />
       <Drawer.Screen
-        name="SecondPage"
+        name="CadastroPessoal"
         options={{drawerLabel: 'Cadastro Pessoal'}}
         component={CadastroPessoalStack}
       />
+    <Drawer.Screen
+        name="CadastroAnimal"
+        options={{drawerLabel: 'Cadastro Animal'}}
+        component={CadastroAnimalStack}
+    />
     </Drawer.Navigator>
   );
 }
