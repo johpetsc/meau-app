@@ -1,10 +1,29 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {Button, View, Text, SafeAreaView, ScrollView, StyleSheet, Dimensions} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import TextBox from '../../components/TextBoxComponents/TextBox'
 import Icon from 'react-native-vector-icons/EvilIcons';
+import firestore from '@react-native-firebase/firestore';
 
 const CadastroPessoal = ({navigation}) => {
+  const [dados, setDados] = useState({
+    nome: 'Nome teste', 
+    idade: 31,
+    cidade: 'Cidade teste',
+    endereco: 'Endereco teste',
+    estado: 'RS',
+    telefone: '99999999',
+    })
+    
+  onButtonPress = () => {
+    firestore().collection('usuarios')
+    .add({
+      dados
+    })
+    .then(() => {
+      console.log('User added!');
+    })
+  }
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
@@ -86,7 +105,7 @@ const CadastroPessoal = ({navigation}) => {
           <Icon name={'plus'} size={24} color={'#757575'}/>
           <Text style={styles.pictureText}>adicionar foto</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => onButtonPress()}>
           <Text style={styles.buttonText}>FAZER CADASTRO</Text>
         </TouchableOpacity>
       </ScrollView>
