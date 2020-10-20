@@ -3,8 +3,24 @@ import {Button, View, Text, SafeAreaView, ScrollView, StyleSheet, Dimensions} fr
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import TextBox from '../../components/TextBoxComponents/TextBox'
 import Icon from 'react-native-vector-icons/EvilIcons';
+import firestore from '@react-native-firebase/firestore';
 
 const CadastroPessoal = ({navigation}) => {
+  onButtonPress = () => {
+    firestore().collection('usuarios')
+    .add({
+      nome: 'Ada Lovelace',
+      idade: 30,
+      cidade: 'Porto Alegre',
+      edereco: 'Rua teste',
+      estado: 'RS',
+      telefone: '99999999',
+    })
+    .then(() => {
+      console.log('User added!');
+    })
+  
+  }
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
@@ -86,7 +102,7 @@ const CadastroPessoal = ({navigation}) => {
           <Icon name={'plus'} size={24} color={'#757575'}/>
           <Text style={styles.pictureText}>adicionar foto</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => onButtonPress()}>
           <Text style={styles.buttonText}>FAZER CADASTRO</Text>
         </TouchableOpacity>
       </ScrollView>
