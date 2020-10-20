@@ -19,6 +19,7 @@ export default class CampoTexto extends PureComponent {
             style={styles.textInput}
             placeholder={campo}
             placeholderTextColor={'#bdbdbd'}
+            onChangeText={texto => setDados(texto)}
             secureTextEntry={seguro}
             autoCapitalize="none"
             value={entrada} />

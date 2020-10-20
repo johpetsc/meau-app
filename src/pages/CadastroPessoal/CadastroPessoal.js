@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {Button, View, Text, SafeAreaView, ScrollView, StyleSheet, Dimensions} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import TextBox from '../../components/TextBoxComponents/TextBox'
@@ -6,20 +6,23 @@ import Icon from 'react-native-vector-icons/EvilIcons';
 import firestore from '@react-native-firebase/firestore';
 
 const CadastroPessoal = ({navigation}) => {
+  const [dados, setDados] = useState({
+    nome: 'Nome teste', 
+    idade: 31,
+    cidade: 'Cidade teste',
+    endereco: 'Endereco teste',
+    estado: 'RS',
+    telefone: '99999999',
+    })
+    
   onButtonPress = () => {
     firestore().collection('usuarios')
     .add({
-      nome: 'Ada Lovelace',
-      idade: 30,
-      cidade: 'Porto Alegre',
-      edereco: 'Rua teste',
-      estado: 'RS',
-      telefone: '99999999',
+      dados
     })
     .then(() => {
       console.log('User added!');
     })
-  
   }
   return (
     <SafeAreaView style={{flex: 1}}>
