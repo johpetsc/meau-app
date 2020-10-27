@@ -4,8 +4,48 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import TextBox from '../../components/TextBoxComponents/TextBox';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import CheckBox from '@react-native-community/checkbox';
+import {useState} from 'react';
+import RadioButton from '../../components/RadioButton/RadioButton';
 
 const CadastroAnimal = ({navigation}) => {
+  const [dados, setDados] = useState({
+    nome: '',
+    especie: 'Cachorro',
+    porte: 'Pequeno',
+    saude: [],
+    sexo: 'Macho',
+    sobre: '',
+    temperamento: [],
+    exigencias: [],
+    doencas: '',
+    idade: 'Filhote',
+  });
+
+  const checkSelected = (value, array) => {
+    return array.includes(value);
+  };
+
+  const handleChecked = (value, chave) => {
+    if (dados[chave].includes(value)) {
+      setDados((prevState) => ({
+        ...prevState,
+        [chave]: prevState[chave].filter((item) => item !== value),
+      }));
+    } else {
+      setDados((prevState) => ({
+        ...prevState,
+        [chave]: [...prevState[chave], value],
+      }));
+    }
+  };
+
+  const handleRadioButton = (value, chave) => {
+    setDados((prevState) => ({...prevState, [chave]: value}));
+  };
+
+  const handleChange = (value, nome) =>
+    setDados((prevState) => ({...prevState, [nome]: value}));
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
@@ -32,7 +72,13 @@ const CadastroAnimal = ({navigation}) => {
           <Text style={styles.text}>NOME DO ANIMAL</Text>
         </View>
         <View style={styles.textBox}>
-          <TextBox campo={'Nome do animal'} icone={''} />
+          <TextBox
+            campo={'Nome do animal'}
+            dado={dados.nome}
+            handleChange={handleChange}
+            icone={''}
+            nome={'nome'}
+          />
         </View>
         <View>
           <Text style={styles.text}>FOTO DO ANIMAL</Text>
@@ -46,13 +92,21 @@ const CadastroAnimal = ({navigation}) => {
         </View>
         <View style={styles.formGroup}>
           <View style={styles.formRow}>
-            <View flexDirection={'row'}>
-              <Icon color={'#757575'} name={'radio-button-off'} size={24} />
-              <Text>Cachorro</Text>
-            </View>
+            <RadioButton
+              style={styles.radioRow}
+              label={'Cachorro'}
+              value={dados.especie === 'Cachorro'}
+              chave={'especie'}
+              handleChange={handleRadioButton}
+            />
             <View style={styles.radioRow} left={124}>
-              <Icon color={'#757575'} name={'radio-button-off'} size={24} />
-              <Text>Gato</Text>
+              <RadioButton
+                style={styles.radioRow}
+                label={'Gato'}
+                value={dados.especie === 'Gato'}
+                chave={'especie'}
+                handleChange={handleRadioButton}
+              />
             </View>
           </View>
         </View>
@@ -61,11 +115,21 @@ const CadastroAnimal = ({navigation}) => {
         </View>
         <View style={styles.formGroup}>
           <View style={styles.formRow}>
-            <Icon color={'#757575'} name={'radio-button-off'} size={24} />
-            <Text>Macho</Text>
+            <RadioButton
+              style={styles.radioRow}
+              label={'Macho'}
+              value={dados.sexo === 'Macho'}
+              chave={'sexo'}
+              handleChange={handleRadioButton}
+            />
             <View style={styles.radioRow} left={124}>
-              <Icon color={'#757575'} name={'radio-button-off'} size={24} />
-              <Text>Fêmea</Text>
+              <RadioButton
+                style={styles.radioRow}
+                label={'Fêmea'}
+                value={dados.sexo === 'Fêmea'}
+                chave={'sexo'}
+                handleChange={handleRadioButton}
+              />
             </View>
           </View>
         </View>
@@ -74,15 +138,30 @@ const CadastroAnimal = ({navigation}) => {
         </View>
         <View style={styles.formGroup}>
           <View style={styles.formRow}>
-            <Icon color={'#757575'} name={'radio-button-off'} size={24} />
-            <Text>Pequeno</Text>
+            <RadioButton
+              style={styles.radioRow}
+              label={'Pequeno'}
+              value={dados.porte === 'Pequeno'}
+              chave={'porte'}
+              handleChange={handleRadioButton}
+            />
             <View style={styles.radioRow} left={124}>
-              <Icon color={'#757575'} name={'radio-button-off'} size={24} />
-              <Text>Médio</Text>
+              <RadioButton
+                style={styles.radioRow}
+                label={'Médio'}
+                value={dados.porte === 'Médio'}
+                chave={'porte'}
+                handleChange={handleRadioButton}
+              />
             </View>
             <View style={styles.radioRow} left={224}>
-              <Icon color={'#757575'} name={'radio-button-off'} size={24} />
-              <Text>Grande</Text>
+              <RadioButton
+                style={styles.radioRow}
+                label={'Grande'}
+                value={dados.porte === 'Grande'}
+                chave={'porte'}
+                handleChange={handleRadioButton}
+              />
             </View>
           </View>
         </View>
@@ -91,15 +170,30 @@ const CadastroAnimal = ({navigation}) => {
         </View>
         <View style={styles.formGroup}>
           <View style={styles.formRow}>
-            <Icon color={'#757575'} name={'radio-button-off'} size={24} />
-            <Text>Filhote</Text>
+            <RadioButton
+              style={styles.radioRow}
+              label={'Filhote'}
+              value={dados.idade === 'Filhote'}
+              chave={'idade'}
+              handleChange={handleRadioButton}
+            />
             <View style={styles.radioRow} left={124}>
-              <Icon color={'#757575'} name={'radio-button-off'} size={24} />
-              <Text>Adulto</Text>
+              <RadioButton
+                style={styles.radioRow}
+                label={'Adulto'}
+                value={dados.idade === 'Adulto'}
+                chave={'idade'}
+                handleChange={handleRadioButton}
+              />
             </View>
             <View style={styles.radioRow} left={224}>
-              <Icon color={'#757575'} name={'radio-button-off'} size={24} />
-              <Text>Idoso</Text>
+              <RadioButton
+                style={styles.radioRow}
+                label={'Idoso'}
+                value={dados.idade === 'Idoso'}
+                chave={'idade'}
+                handleChange={handleRadioButton}
+              />
             </View>
           </View>
         </View>
@@ -108,19 +202,37 @@ const CadastroAnimal = ({navigation}) => {
         </View>
         <View style={styles.formGroup}>
           <View style={styles.formRow}>
-            <CheckBox />
+            <CheckBox
+              value={checkSelected('Brincalhão', dados.temperamento)}
+              onValueChange={() => handleChecked('Brincalhão', 'temperamento')}
+            />
             <Text>Brincalhão</Text>
-            <CheckBox />
+            <CheckBox
+              value={checkSelected('Tímido', dados.temperamento)}
+              onValueChange={() => handleChecked('Tímido', 'temperamento')}
+            />
             <Text>Tímido</Text>
-            <CheckBox />
+            <CheckBox
+              value={checkSelected('Calmo', dados.temperamento)}
+              onValueChange={() => handleChecked('Calmo', 'temperamento')}
+            />
             <Text>Calmo</Text>
           </View>
           <View style={styles.formRow}>
-            <CheckBox />
+            <CheckBox
+              value={checkSelected('Guarda', dados.temperamento)}
+              onValueChange={() => handleChecked('Guarda', 'temperamento')}
+            />
             <Text>Guarda</Text>
-            <CheckBox />
+            <CheckBox
+              value={checkSelected('Amoroso', dados.temperamento)}
+              onValueChange={() => handleChecked('Amoroso', 'temperamento')}
+            />
             <Text>Amoroso</Text>
-            <CheckBox />
+            <CheckBox
+              value={checkSelected('Preguiçoso', dados.temperamento)}
+              onValueChange={() => handleChecked('Preguiçoso', 'temperamento')}
+            />
             <Text>Preguiçoso</Text>
           </View>
         </View>
@@ -129,39 +241,78 @@ const CadastroAnimal = ({navigation}) => {
         </View>
         <View style={styles.formGroup}>
           <View style={styles.formRow}>
-            <CheckBox />
+            <CheckBox
+              value={checkSelected('Vacinado', dados.saude)}
+              onValueChange={() => handleChecked('Vacinado', 'saude')}
+            />
             <Text>Vacinado</Text>
-            <CheckBox />
+            <CheckBox
+              value={checkSelected('Vermifugado', dados.saude)}
+              onValueChange={() => handleChecked('Vermifugado', 'saude')}
+            />
             <Text>Vermifugado</Text>
           </View>
           <View style={styles.formRow}>
-            <CheckBox />
+            <CheckBox
+              value={checkSelected('Castrado', dados.saude)}
+              onValueChange={() => handleChecked('Castrado', 'saude')}
+            />
             <Text>Castrado</Text>
-            <CheckBox />
+            <CheckBox
+              value={checkSelected('Doente', dados.saude)}
+              onValueChange={() => handleChecked('Doente', 'saude')}
+            />
             <Text>Doente</Text>
           </View>
         </View>
         <View style={styles.textBox}>
-          <TextBox campo={'Doenças do animal'} icone={''} />
+          <TextBox
+            campo={'Doenças do animal'}
+            dado={dados.doencas}
+            handleChange={handleChange}
+            icone={''}
+            nome={'doencas'}
+          />
         </View>
         <View>
           <Text style={styles.text}>EXIGÊNCIAS PARA ADOÇÃO</Text>
         </View>
         <View style={styles.formGroup}>
           <View style={styles.formRow}>
-            <CheckBox />
+            <CheckBox
+              value={checkSelected('Termo de adoção', dados.exigencias)}
+              onValueChange={() =>
+                handleChecked('Termo de adoção', 'exigencias')
+              }
+            />
             <Text>Termo de adoção</Text>
           </View>
           <View style={styles.formRow}>
-            <CheckBox />
+            <CheckBox
+              value={checkSelected('Fotos de casa', dados.exigencias)}
+              onValueChange={() => handleChecked('Fotos de casa', 'exigencias')}
+            />
             <Text>Fotos de casa</Text>
           </View>
           <View style={styles.formRow}>
-            <CheckBox />
+            <CheckBox
+              value={checkSelected('Visita prévia ao animal', dados.exigencias)}
+              onValueChange={() =>
+                handleChecked('Visita prévia ao animal', 'exigencias')
+              }
+            />
             <Text>Visita prévia ao animal</Text>
           </View>
           <View style={styles.formRow}>
-            <CheckBox />
+            <CheckBox
+              value={checkSelected(
+                'Acompanhamento pós adoção',
+                dados.exigencias,
+              )}
+              onValueChange={() =>
+                handleChecked('Acompanhamento pós adoção', 'exigencias')
+              }
+            />
             <Text>Acompanhamento pós adoção</Text>
           </View>
           <View left={60} style={styles.formRow}>
@@ -181,7 +332,13 @@ const CadastroAnimal = ({navigation}) => {
           <Text style={styles.text}>SOBRE O ANIMAL</Text>
         </View>
         <View style={styles.textBox}>
-          <TextBox campo={'Compartilhe a história do animal'} icone={''} />
+          <TextBox
+            campo={'Compartilhe a história do animal'}
+            dado={dados.sobre}
+            handleChange={handleChange}
+            icone={''}
+            nome={'sobre'}
+          />
         </View>
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>COLOCAR PARA ADOÇÃO</Text>
