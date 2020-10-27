@@ -1,38 +1,47 @@
-import React, { PureComponent } from 'react';
-import { StyleSheet, TouchableOpacity, Text, View, TextInput, ActivityIndicator, ScrollView, Image } from 'react-native';
+import React, {PureComponent} from 'react';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  View,
+  TextInput,
+  ActivityIndicator,
+  ScrollView,
+  Image,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class CampoTexto extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
-	render() {
-    const {entrada, icone, campo, seguro} = this.props;
+  render() {
+    const {dado, icone, campo, seguro, handleChange, nome} = this.props;
 
-		return (
+    return (
       <ScrollView keyboardShouldPersistTaps="always">
         <View style={styles.viewInputContainer}>
           <TextInput
             style={styles.textInput}
             placeholder={campo}
             placeholderTextColor={'#bdbdbd'}
-            onChangeText={texto => setDados(texto)}
+            onChangeText={(texto) => handleChange(texto, nome)}
             secureTextEntry={seguro}
             autoCapitalize="none"
-            value={entrada} />
-          { entrada &&
-          <TouchableOpacity>
-            <Icon style={styles.inputIconSubmit} name={icone} size={20} />
-          </TouchableOpacity>
-          }
+            value={dado}
+          />
+          {/*{entrada && (*/}
+          {/*  <TouchableOpacity>*/}
+          {/*    <Icon style={styles.inputIconSubmit} name={icone} size={20} />*/}
+          {/*  </TouchableOpacity>*/}
+          {/*)}*/}
           <Icon style={styles.icon} name={icone} size={16} />
         </View>
       </ScrollView>
-		);
-	}
+    );
+  }
 }
 
 const colors = {
@@ -49,11 +58,11 @@ const styles = StyleSheet.create({
   },
   icon: {
     color: colors.cinza,
-    marginRight:10,
+    marginRight: 10,
   },
   iconButton: {
     color: colors.branco,
-    marginRight:10,
+    marginRight: 10,
   },
   viewInputContainer: {
     flexDirection: 'row',
