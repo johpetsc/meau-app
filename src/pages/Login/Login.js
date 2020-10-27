@@ -1,26 +1,57 @@
-// React Native Navigation Drawer – Example using Latest Navigation Version //
-// https://aboutreact.com/react-native-navigation-drawer //
-import * as React from 'react';
+import React, {useState} from 'react';
 import {Button, View, Text, SafeAreaView, StyleSheet, Dimensions} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import TextBox from '../../components/TextBoxComponents/TextBox';
 import Icon from 'react-native-vector-icons/Entypo';
+import auth from '@react-native-firebase/auth'
 
 const Login = ({navigation}) => {
+  const [dados, setDados] = useState({
+    'e-mail': '',
+    password: '',
+  });
+
+  onButtonPress = () => {
+    auth().signInWithEmailAndPassword('teste@gmail.com', 'testecom6')
+    .then(() => {
+      console.log('User signed in!');
+    })
+    .catch(error => {
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('That email address is already in use!');
+      }
+  
+      if (error.code === 'auth/invalid-email') {
+        console.log('That email address is invalid!');
+      }
+  
+      console.error(error);
+    });
+  }
+
+  const handleChange = (value, nome) =>
+    setDados((prevState) => ({...prevState, [nome]: value}));
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.inputContainer}>
         <TextBox
           campo={'Nome de usuário'}
+          dado={dados["e-mail"]}
+          handleChange={handleChange}
           icone={''}
+          nome={'e-mail'}
         />
         <TextBox
           campo={'Senha'}
+          dado={dados.password}
+          handleChange={handleChange}
           icone={''}
+          nome={'password'}
           seguro={true}
         />
       </View>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('LoginErro')}>
+      <TouchableOpacity style={styles.button} onPress={() => onButtonPress()}>
         <Text style={styles.buttonText}>ENTRAR</Text>
       </TouchableOpacity>
       <View style={styles.socialContainer}>
