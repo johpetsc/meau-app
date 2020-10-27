@@ -12,6 +12,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import TextBox from '../../components/TextBoxComponents/TextBox';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const CadastroPessoal = ({navigation}) => {
   const [dados, setDados] = useState({
@@ -21,6 +22,7 @@ const CadastroPessoal = ({navigation}) => {
     endereco: '',
     estado: '',
     telefone: '',
+    'e-mail': '',
   });
 
   const [credenciais, setCredenciais] = useState({
@@ -30,6 +32,21 @@ const CadastroPessoal = ({navigation}) => {
   });
 
   const onButtonPress = () => {
+    auth().createUserWithEmailAndPassword(credenciais.username, credenciais.password)
+    .then(() => {
+      console.log('User account created & signed in!');
+    })
+    .catch(error => {
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('That email address is already in use!');
+      }
+  
+      if (error.code === 'auth/invalid-email') {
+        console.log('That email address is invalid!');
+      }
+  
+      console.error(error);
+    });
     firestore()
       .collection('usuarios')
       .add({
