@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import CheckBox from '@react-native-community/checkbox';
 import {useState} from 'react';
 import RadioButton from '../../components/RadioButton/RadioButton';
+import firestore from '@react-native-firebase/firestore';
 
 const CadastroAnimal = ({navigation}) => {
   const [dados, setDados] = useState({
@@ -20,6 +21,17 @@ const CadastroAnimal = ({navigation}) => {
     doencas: '',
     idade: 'Filhote',
   });
+
+  const handlePress = () => {
+    firestore()
+      .collection('usuarios/V5ghSlb7hqS0lKpDhAgn/animais')
+      .add({
+        dados,
+      })
+      .then(() => {
+        console.log('User added!');
+      });
+  };
 
   const checkSelected = (value, array) => {
     return array.includes(value);
@@ -340,7 +352,7 @@ const CadastroAnimal = ({navigation}) => {
             nome={'sobre'}
           />
         </View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={() => handlePress()} style={styles.button}>
           <Text style={styles.buttonText}>COLOCAR PARA ADOÇÃO</Text>
         </TouchableOpacity>
       </ScrollView>

@@ -1,9 +1,16 @@
 import React, {useState} from 'react';
-import {Button, View, Text, SafeAreaView, StyleSheet, Dimensions} from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {
+  Button,
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import TextBox from '../../components/TextBoxComponents/TextBox';
 import Icon from 'react-native-vector-icons/Entypo';
-import auth from '@react-native-firebase/auth'
+import auth from '@react-native-firebase/auth';
 
 const Login = ({navigation}) => {
   const [dados, setDados] = useState({
@@ -11,23 +18,24 @@ const Login = ({navigation}) => {
     password: '',
   });
 
-  onButtonPress = () => {
-    auth().signInWithEmailAndPassword('teste@gmail.com', 'testecom6')
-    .then(() => {
-      console.log('User signed in!');
-    })
-    .catch(error => {
-      if (error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
-      }
-  
-      if (error.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
-      }
-  
-      console.error(error);
-    });
-  }
+  const onButtonPress = () => {
+    auth()
+      .signInWithEmailAndPassword(dados['e-mail'], dados.password)
+      .then(() => {
+        console.log('User signed in!');
+      })
+      .catch((error) => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+        }
+
+        console.error(error);
+      });
+  };
 
   const handleChange = (value, nome) =>
     setDados((prevState) => ({...prevState, [nome]: value}));
@@ -37,7 +45,7 @@ const Login = ({navigation}) => {
       <View style={styles.inputContainer}>
         <TextBox
           campo={'Nome de usuário'}
-          dado={dados["e-mail"]}
+          dado={dados['e-mail']}
           handleChange={handleChange}
           icone={''}
           nome={'e-mail'}
@@ -56,12 +64,12 @@ const Login = ({navigation}) => {
       </TouchableOpacity>
       <View style={styles.socialContainer}>
         <TouchableOpacity style={styles.facebookbutton}>
-          <Icon name={'facebook'} size={20} color={'#f7f7f7'}/>
-          <Text style={styles.buttonTextWhite}>    ENTRAR COM FACEBOOK</Text>
+          <Icon name={'facebook'} size={20} color={'#f7f7f7'} />
+          <Text style={styles.buttonTextWhite}> ENTRAR COM FACEBOOK</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.googlebutton}>
-          <Icon name={'google-'} size={20} color={'#f7f7f7'}/>
-          <Text style={styles.buttonTextWhite}>    ENTRAR COM GOOGLE</Text>
+          <Icon name={'google-'} size={20} color={'#f7f7f7'} />
+          <Text style={styles.buttonTextWhite}> ENTRAR COM GOOGLE</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -69,7 +77,7 @@ const Login = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  button:{
+  button: {
     backgroundColor: '#88c9bf',
     width: 232,
     height: 40,
@@ -78,15 +86,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 5,
   },
-  inputContainer:{
+  inputContainer: {
     marginTop: 64,
-    marginBottom: 58
+    marginBottom: 58,
   },
-  socialContainer:{
+  socialContainer: {
     marginTop: 72,
-    marginBottom: 8
+    marginBottom: 8,
   },
-  googlebutton:{
+  googlebutton: {
     backgroundColor: '#f15f5c',
     marginTop: 8,
     width: 232,
@@ -95,9 +103,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 5,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
-  facebookbutton:{
+  facebookbutton: {
     backgroundColor: '#194f7c',
     width: 232,
     height: 40,
@@ -105,17 +113,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 5,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
-  buttonText:{
+  buttonText: {
     color: '#434343',
     fontFamily: 'roboto',
-    fontSize: 12
+    fontSize: 12,
   },
-  buttonTextWhite:{
+  buttonTextWhite: {
     color: '#f7f7f7',
     fontFamily: 'roboto',
-    fontSize: 12
+    fontSize: 12,
   },
 });
 
