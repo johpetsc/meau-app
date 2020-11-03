@@ -32,28 +32,34 @@ const CadastroPessoal = ({navigation}) => {
   });
 
   const onButtonPress = () => {
-    auth().createUserWithEmailAndPassword(credenciais.username, credenciais.password)
-    .then(() => {
-      console.log('User account created & signed in!');
-    })
-    .catch(error => {
-      if (error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
-      }
-  
-      if (error.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
-      }
-  
-      console.error(error);
-    });
-    firestore()
-      .collection('usuarios')
-      .add({
-        dados,
-      })
+    auth()
+      .createUserWithEmailAndPassword(
+        credenciais.username,
+        credenciais.password,
+      )
       .then(() => {
-        console.log('User added!');
+        console.log('User account created & signed in!');
+        const user = auth().currentUser;
+        firestore()
+          .collection('usuarios')
+          .doc(user.uid)
+          .add({
+            dados,
+          })
+          .then(() => {
+            console.log('User added!');
+          });
+      })
+      .catch((error) => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+        }
+
+        console.error(error);
       });
   };
   const handleChange = (value, nome) =>
