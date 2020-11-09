@@ -25,7 +25,7 @@ const CadastroAnimal = ({navigation}) => {
   const handlePress = () => {
     firestore()
       .collection('usuarios/V5ghSlb7hqS0lKpDhAgn/animais')
-      .add({
+      .set({
         dados,
       })
       .then(() => {
