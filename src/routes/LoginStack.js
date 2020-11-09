@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Login from '../pages/Login/Login';
 import LoginErro from '../pages/Login/LoginErro';
+import Usuario from '../pages/Usuario/Usuario';
 import Stack from './SharedStack';
 import {Image, TouchableOpacity, View} from 'react-native';
 
@@ -49,6 +50,23 @@ export default function LoginStack({navigation}) {
         component={LoginErro}
         options={{
           title: 'Login', //Set Header Title
+          headerStyle: {
+            backgroundColor: '#cfe9e5', //Set Header color
+          },
+          headerTintColor: '#434343', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Usuario"
+        component={Usuario}
+        options={{
+          title: 'Usuario', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerStructure navigationProps={navigation} />
+          ),
           headerStyle: {
             backgroundColor: '#cfe9e5', //Set Header color
           },
