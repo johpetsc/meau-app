@@ -7,12 +7,15 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
+  Image,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import TextBox from '../../components/TextBoxComponents/TextBox';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import ImagePicker from 'react-native-image-picker';
+import storage from '@react-native-firebase/storage';
 
 const CadastroPessoal = ({navigation}) => {
   const [dados, setDados] = useState({
@@ -31,21 +34,28 @@ const CadastroPessoal = ({navigation}) => {
     confirm: '',
   });
 
+  const [response, setResponse] = React.useState(null);
+
   const onButtonPress = () => {
     auth()
       .createUserWithEmailAndPassword(
         credenciais.username,
         credenciais.password,
       )
-      .then(() => {
+      .then(async () => {
         console.log('User account created & signed in!');
         const user = auth().currentUser;
+        const reference = storage().ref('user_photo/' + user.uid);
+        if (response?.uri) {
+          await reference.putFile(response.uri);
+        }
         firestore()
           .collection('usuarios')
           .doc(user.uid)
-          .set(
-            dados,
-          )
+          .set({
+            ...dados,
+            imageRef: response?.uri ? reference.fullPath : '',
+          })
           .then(() => {
             console.log('User added!');
             navigation.navigate('Usuario');
@@ -180,9 +190,39 @@ const CadastroPessoal = ({navigation}) => {
         <View>
           <Text style={styles.text}>FOTO DE PERFIL</Text>
         </View>
-        <TouchableOpacity style={styles.picture}>
-          <Icon name={'plus'} size={24} color={'#757575'} />
-          <Text style={styles.pictureText}>adicionar foto</Text>
+        <TouchableOpacity
+          style={styles.picture}
+          onPress={() =>
+            ImagePicker.launchImageLibrary(
+              {
+                mediaType: 'photo',
+                includeBase64: false,
+                maxHeight: 200,
+                maxWidth: 200,
+              },
+              (res) => {
+                setResponse(res);
+              },
+            )
+          }>
+          {(response && (
+            <View style={styles.image}>
+              <Image
+                style={{width: 200, height: 200}}
+                source={{uri: response.uri}}
+              />
+            </View>
+          )) || (
+            <>
+              <Icon
+                name={'plus'}
+                style={styles.pictureIcon}
+                size={24}
+                color={'#757575'}
+              />
+              <Text style={styles.pictureText}>adicionar foto</Text>
+            </>
+          )}
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => onButtonPress()}>
           <Text style={styles.buttonText}>FAZER CADASTRO</Text>
@@ -214,14 +254,16 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     elevation: 5,
   },
+  pictureIcon: {
+    paddingTop: 40,
+  },
   picture: {
     backgroundColor: '#e6e7e7',
     margin: 32,
-    width: 128,
-    height: 128,
+    minWidth: 128,
+    minHeight: 128,
     alignSelf: 'center',
     alignItems: 'center',
-    paddingTop: 40,
     elevation: 5,
   },
   pictureText: {
