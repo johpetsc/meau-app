@@ -25,7 +25,7 @@ const CadastroPessoal = ({navigation}) => {
     endereco: '',
     estado: '',
     telefone: '',
-    'e-mail': '',
+    email: '',
   });
 
   const [credenciais, setCredenciais] = useState({
@@ -58,6 +58,7 @@ const CadastroPessoal = ({navigation}) => {
           })
           .then(() => {
             console.log('User added!');
+            navigation.navigate('Usuario');
           });
       })
       .catch((error) => {

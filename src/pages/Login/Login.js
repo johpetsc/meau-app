@@ -22,9 +22,11 @@ const Login = ({navigation}) => {
     auth()
       .signInWithEmailAndPassword(dados['e-mail'], dados.password)
       .then(() => {
+        navigation.navigate('Usuario')
         console.log('User signed in!');
       })
       .catch((error) => {
+        navigation.navigate('LoginErro')
         if (error.code === 'auth/email-already-in-use') {
           console.log('That email address is already in use!');
         }
