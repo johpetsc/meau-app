@@ -24,7 +24,6 @@ async function fetchUser(){
 }
 
 const userDocument = fetchUser()
-const dados = userDocument
 
 const Usuario = ({navigation}) => {
   return (
