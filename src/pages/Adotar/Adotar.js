@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Button,
   View,
@@ -6,36 +6,23 @@ import {
   SafeAreaView,
   StyleSheet,
   Dimensions,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Entypo';
 import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 import AnimalBox from '../../components/AnimalBox';
+import storage from '@react-native-firebase/storage';
 
-const listaIds = []
+const Adotar = ({navigation}) => {
+  const [listaAnimais, setListaAnimais] = useState([]);
+  const [listaIds, setListaIds] = useState([]);
 
-async function fetchAnimal(){
-    const listaAnimais = []
-    const Documents = await firestore().collectionGroup('animais')
-             .get()
-             .then(querrySnapshot => {
-                 querrySnapshot.forEach(documentSnapshot => {
-                    listaAnimais.push(documentSnapshot.data())
-                    listaIds.push(documentSnapshot.id)
-                     console.log(documentSnapshot.id, documentSnapshot.data())
-                 })
-               });
-
-  return listaAnimais;
-}
-
-const listaAnimais = fetchAnimal()
-const onPetPress = () => {
-    console.log(listaIds)
+  const onPetPress = () => {
+    console.log(listaIds);
     firestore()
-      .collection('usuarios/SULKDjHeZQeEdgtlejit/animais/'+ listaIds[0] +'/pedidos')
+      .collection(
+        'usuarios/SULKDjHeZQeEdgtlejit/animais/' + listaIds[0] + '/pedidos',
+      )
       .add({
         interessado: '',
         tipo: 'Adoção',
@@ -43,27 +30,62 @@ const onPetPress = () => {
       .then(() => {
         console.log('Pedido feito!');
       });
-}
+  };
 
-const onButtonPress = () => {
-    console.log(listaAnimais._W[0])
-}
-const Adotar = ({navigation}) => {
+  const onButtonPress = () => {
+    console.log(listaAnimais._W[0]);
+  };
+
+  const fetchAnimais = async (animais, ids) => {
+    const Documents = await firestore()
+      .collectionGroup('animais')
+      .get()
+      .then((querrySnapshot) => {
+        querrySnapshot.forEach((documentSnapshot) => {
+          animais.push(documentSnapshot.data());
+          ids.push(documentSnapshot.id);
+          console.log(documentSnapshot.id, documentSnapshot.data());
+        });
+      });
+  };
+
+  const fetchImagem = async (animais) => {
+    for (const item of animais) {
+      if (item.imageRef) {
+        item.url = await storage().ref(item.imageRef).getDownloadURL();
+      }
+    }
+  };
+
+  useEffect(() => {
+    const animais = [];
+    const ids = [];
+    fetchAnimais(animais, ids).then(() => {
+      fetchImagem(animais).then(() => {
+        console.log(animais);
+        setListaAnimais(animais);
+        setListaIds(ids);
+      });
+    });
+  }, []);
+
   return (
     <ScrollView style={{flex: 1}}>
-      <TouchableOpacity onPress={() => onPetPress()}>
-            <AnimalBox
-                nome={listaAnimais._W[0]?.nome}
-                sexo={listaAnimais._W[0]?.sexo}
-                idade={'ADULTO'}
-                porte={listaAnimais._W[0]?.porte}
-                endereco={'SAMAMBAIA SUL - DISTRITO FEDERAL'}
-                imagem={require('../../images/Meau_Icone.png')} 
-            />
-      </TouchableOpacity>
-        {/*<TouchableOpacity style={styles.button}  onPress={() => onButtonPress()}>
-            <Text style={styles.buttonText}>EDITAR PERFIL</Text>
-        </TouchableOpacity>*/}
+      {listaAnimais.map((item, index) => (
+        <TouchableOpacity
+          key={index}
+          style={styles.card}
+          onPress={() => onPetPress()}>
+          <AnimalBox
+            nome={item.nome}
+            sexo={item.sexo}
+            idade={item.idade}
+            porte={item.porte}
+            endereco={'SAMAMBAIA SUL - DISTRITO FEDERAL'}
+            imagem={{uri: item.url} || require('../../images/Meau_Icone.png')}
+          />
+        </TouchableOpacity>
+      ))}
     </ScrollView>
   );
 };
@@ -78,22 +100,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 5,
   },
-texto:{
+  texto: {
     padding: 0,
     fontSize: 15,
     fontFamily: 'Roboto',
     color: 'lightgray',
-    alignSelf: "center",
-},
-container: {
+    alignSelf: 'center',
+  },
+  container: {
     flex: 1,
     marginTop: 10,
-},
-separator: {
+  },
+  separator: {
     marginVertical: 8,
     borderBottomColor: '#737373',
     borderBottomWidth: StyleSheet.hairlineWidth,
-},
+  },
   inputContainer: {
     marginTop: 64,
     marginBottom: 58,
