@@ -1,12 +1,22 @@
 import * as React from 'react';
-import {View, Text, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Image,
+} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import TextBox from '../../components/TextBoxComponents/TextBox';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/EvilIcons';
 import CheckBox from '@react-native-community/checkbox';
 import {useState} from 'react';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+import storage from '@react-native-firebase/storage';
+import ImagePicker from 'react-native-image-picker';
 
 const CadastroAnimal = ({navigation}) => {
   const [dados, setDados] = useState({
@@ -22,14 +32,24 @@ const CadastroAnimal = ({navigation}) => {
     idade: 'Filhote',
   });
 
-  const handlePress = () => {
+  const [response, setResponse] = useState({});
+
+  const handlePress = async () => {
+    const user = auth().currentUser;
+    console.log(user.uid);
+    const reference = storage().ref('animal_photo/' + user.uid + dados.nome);
+    if (response.uri) {
+      console.log('entrou');
+      await reference.putFile(response.uri);
+    }
     firestore()
-      .collection('usuarios/V5ghSlb7hqS0lKpDhAgn/animais')
-      .set({
-        dados,
+      .collection('usuarios/' + user.uid + '/animais')
+      .add({
+        ...dados,
+        imageRef: response?.uri ? reference.fullPath : '',
       })
       .then(() => {
-        console.log('User added!');
+        console.log('Animal added!');
       });
   };
 
@@ -95,9 +115,39 @@ const CadastroAnimal = ({navigation}) => {
         <View>
           <Text style={styles.text}>FOTO DO ANIMAL</Text>
         </View>
-        <TouchableOpacity style={styles.picture}>
-          <Icon name={'add-circle-outline'} size={24} color={'#757575'} />
-          <Text style={styles.pictureText}>adicionar fotos</Text>
+        <TouchableOpacity
+          style={styles.picture}
+          onPress={() =>
+            ImagePicker.launchImageLibrary(
+              {
+                mediaType: 'photo',
+                includeBase64: false,
+                maxHeight: 200,
+                maxWidth: 200,
+              },
+              (res) => {
+                setResponse(res);
+              },
+            )
+          }>
+          {(response.uri && (
+            <View style={styles.image}>
+              <Image
+                style={{width: 200, height: 200}}
+                source={{uri: response.uri}}
+              />
+            </View>
+          )) || (
+            <>
+              <Icon
+                name={'plus'}
+                style={styles.pictureIcon}
+                size={24}
+                color={'#757575'}
+              />
+              <Text style={styles.pictureText}>adicionar foto</Text>
+            </>
+          )}
         </TouchableOpacity>
         <View>
           <Text style={styles.text}>ESPÉCIE</Text>
@@ -390,14 +440,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
   },
+  pictureIcon: {
+    paddingTop: 40,
+  },
   picture: {
     backgroundColor: '#e6e7e7',
     margin: 32,
-    width: 312,
-    height: 128,
+    minWidth: 128,
+    minHeight: 128,
     alignSelf: 'center',
     alignItems: 'center',
-    paddingTop: 40,
     elevation: 5,
   },
   pictureText: {

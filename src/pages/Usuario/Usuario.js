@@ -6,52 +6,58 @@ import {
   SafeAreaView,
   StyleSheet,
   Dimensions,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Entypo';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
-async function fetchUser(){
+async function fetchUser() {
   const user = auth().currentUser;
-  const userDocument = await firestore().collection('usuarios')
-             .doc(user.uid).get()
-             .then(documentSnapshot => {
-                return documentSnapshot.data()});
+  const userDocument = await firestore()
+    .collection('usuarios')
+    .doc(user.uid)
+    .get()
+    .then((documentSnapshot) => {
+      console.log(documentSnapshot.data());
+      return documentSnapshot.data();
+    });
 
   return userDocument;
 }
 
-const userDocument = fetchUser()
+const userDocument = fetchUser();
 
 const Usuario = ({navigation}) => {
   return (
     <ScrollView style={{flex: 1}}>
       <View style={styles.inputContainer}>
-            <View style={styles.separator} />
-            <Text style={styles.texto}>NOME COMPLETO</Text>
-            <Text style={styles.textoMenor}>{userDocument._W?.nome}</Text>
-            <View style={styles.separator} />
-            <Text style={styles.texto}>IDADE</Text>
-            <Text style={styles.textoMenor}>{userDocument._W?.idade}</Text>
-            <View style={styles.separator} />
-            <Text style={styles.texto}>EMAIL</Text>
-            <Text style={styles.textoMenor}>{userDocument._W?.["e-mail"]}</Text>
-            <View style={styles.separator} />
-            <Text style={styles.texto}>LOCALIZAÇÃO</Text>
-            <Text style={styles.textoMenor}>{userDocument._W?.cidade}</Text>
-            <View style={styles.separator} />
-            <Text style={styles.texto}>ENDEREÇO</Text>
-            <Text style={styles.textoMenor}>{userDocument._W?.endereco}</Text>
-            <View style={styles.separator} />
-            <Text style={styles.texto}>TELEFONE</Text>
-            <Text style={styles.textoMenor}>{userDocument._W?.telefone}</Text>
-            <View style={styles.separator} />
-            <Text style={styles.texto}>NOME DE USUÁRIO</Text>
-            <Text style={styles.textoMenor}>{userDocument._W?.nome}</Text>
+        <View style={styles.separator} />
+        <Text style={styles.texto}>NOME COMPLETO</Text>
+        <Text style={styles.textoMenor}>{userDocument._W?.nome}</Text>
+        <View style={styles.separator} />
+        <Text style={styles.texto}>IDADE</Text>
+        <Text style={styles.textoMenor}>{userDocument._W?.idade}</Text>
+        <View style={styles.separator} />
+        <Text style={styles.texto}>EMAIL</Text>
+        <Text style={styles.textoMenor}>{userDocument._W?.['e-mail']}</Text>
+        <View style={styles.separator} />
+        <Text style={styles.texto}>LOCALIZAÇÃO</Text>
+        <Text style={styles.textoMenor}>{userDocument._W?.cidade}</Text>
+        <View style={styles.separator} />
+        <Text style={styles.texto}>ENDEREÇO</Text>
+        <Text style={styles.textoMenor}>{userDocument._W?.endereco}</Text>
+        <View style={styles.separator} />
+        <Text style={styles.texto}>TELEFONE</Text>
+        <Text style={styles.textoMenor}>{userDocument._W?.telefone}</Text>
+        <View style={styles.separator} />
+        <Text style={styles.texto}>NOME DE USUÁRIO</Text>
+        <Text style={styles.textoMenor}>{userDocument._W?.nome}</Text>
       </View>
-      <TouchableOpacity style={styles.button}  onPress={() => navigation.navigate('CadastroPessoal')}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('CadastroPessoal')}>
         <Text style={styles.buttonText}>EDITAR PERFIL</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -68,22 +74,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 5,
   },
-texto:{
+  texto: {
     padding: 0,
     fontSize: 15,
     fontFamily: 'Roboto',
     color: 'lightgray',
-    alignSelf: "center",
-},
-container: {
+    alignSelf: 'center',
+  },
+  container: {
     flex: 1,
     marginTop: 10,
-},
-separator: {
+  },
+  separator: {
     marginVertical: 8,
     borderBottomColor: '#737373',
     borderBottomWidth: StyleSheet.hairlineWidth,
-},
+  },
   inputContainer: {
     marginTop: 64,
     marginBottom: 58,
