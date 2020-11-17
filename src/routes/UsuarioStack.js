@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Login from '../pages/Login/Login';
-import LoginErro from '../pages/Login/LoginErro';
+import Usuario from '../pages/Usuario/Usuario';
+import Animais from '../pages/Usuario/Animais';
 import Stack from './SharedStack';
 import {Image, TouchableOpacity, View} from 'react-native';
 
@@ -24,14 +24,14 @@ const NavigationDrawerStructure = (props) => {
   );
 };
 
-export default function LoginStack({navigation}) {
+export default function UsuarioStack({navigation}) {
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="Usuario">
       <Stack.Screen
-        name="Login"
-        component={Login}
+        name="Usuario"
+        component={Usuario}
         options={{
-          title: 'Login', //Set Header Title
+          title: 'Usuario', //Set Header Title
           headerLeft: () => (
             <NavigationDrawerStructure navigationProps={navigation} />
           ),
@@ -45,10 +45,13 @@ export default function LoginStack({navigation}) {
         }}
       />
       <Stack.Screen
-        name="LoginErro"
-        component={LoginErro}
+        name="Animais"
+        component={Animais}
         options={{
-          title: 'Login', //Set Header Title
+          title: 'Animais', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerStructure navigationProps={navigation} />
+          ),
           headerStyle: {
             backgroundColor: '#cfe9e5', //Set Header color
           },
