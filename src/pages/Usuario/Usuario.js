@@ -6,12 +6,14 @@ import {
   SafeAreaView,
   StyleSheet,
   Dimensions,
+  Image,
   ScrollView,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Entypo';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import storage from '@react-native-firebase/storage';
 
 async function fetchUser() {
   const user = auth().currentUser;
@@ -20,46 +22,64 @@ async function fetchUser() {
     .doc(user.uid)
     .get()
     .then((documentSnapshot) => {
-      console.log(documentSnapshot.data());
+      console.log(documentSnapshot.data().imageRef);
       return documentSnapshot.data();
     });
-
+  try{
+    if (userDocument.imageRef) {
+      console.log(userDocument.imageRef);
+      const url = await storage().ref(userDocument.imageRef).getDownloadURL();
+      userDocument.imageRef = url
+    }
+    }catch(e){
+      console.log(e)
+    }
+    console.log(userDocument.imageRef)
   return userDocument;
 }
 
 const userDocument = fetchUser();
+const user = auth().currentUser;
 
 const Usuario = ({navigation}) => {
   return (
     <ScrollView style={{flex: 1}}>
+      <View style={styles.separator} />
+      <Image
+          source={{uri: userDocument._W?.imageRef} || require('../../images/Meau_Icone.png')}
+          style={styles.imagem}
+        />
+      <View style={styles.separator} />
+      <Text style={styles.usertexto}>{userDocument._W?.email}</Text>
       <View style={styles.inputContainer}>
         <View style={styles.separator} />
         <Text style={styles.texto}>NOME COMPLETO</Text>
-        <Text style={styles.textoMenor}>{userDocument._W?.nome}</Text>
+        <Text style={styles.textomenor}>{userDocument._W?.nome}</Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>IDADE</Text>
-        <Text style={styles.textoMenor}>{userDocument._W?.idade}</Text>
+        <Text style={styles.textomenor}>{userDocument._W?.idade}</Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>EMAIL</Text>
-        <Text style={styles.textoMenor}>{userDocument._W?.['e-mail']}</Text>
+        <Text style={styles.textomenor}>{user.email}</Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>LOCALIZAÇÃO</Text>
-        <Text style={styles.textoMenor}>{userDocument._W?.cidade}</Text>
+        <Text style={styles.textomenor}>{userDocument._W?.cidade}</Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>ENDEREÇO</Text>
-        <Text style={styles.textoMenor}>{userDocument._W?.endereco}</Text>
+        <Text style={styles.textomenor}>{userDocument._W?.endereco}</Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>TELEFONE</Text>
-        <Text style={styles.textoMenor}>{userDocument._W?.telefone}</Text>
+        <Text style={styles.textomenor}>{userDocument._W?.telefone}</Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>NOME DE USUÁRIO</Text>
-        <Text style={styles.textoMenor}>{userDocument._W?.nome}</Text>
+        <Text style={styles.textomenor}>{userDocument._W?.nome}</Text>
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('CadastroPessoal')}>
+        onPress={() => navigation.navigate('Animais')}>
         <Text style={styles.buttonText}>EDITAR PERFIL</Text>
       </TouchableOpacity>
+      <View style={styles.separator} />
     </ScrollView>
   );
 };
@@ -81,43 +101,41 @@ const styles = StyleSheet.create({
     color: 'lightgray',
     alignSelf: 'center',
   },
-  container: {
-    flex: 1,
-    marginTop: 10,
+  textomenor: {
+    padding: 0,
+    fontSize: 15,
+    fontFamily: 'Roboto',
+    color: 'black',
+    alignSelf: 'center',
+  },
+  usertexto: {
+    padding: 0,
+    fontSize: 17,
+    fontFamily: 'Roboto',
+    color: 'black',
+    alignSelf: 'center',
+  },
+  imagem: {
+    width: 150, 
+    height: 150, 
+    alignSelf: 'center', 
+    borderRadius: 150 / 2,
+    overflow: "hidden",
+    borderWidth: 0.5,
+    borderColor: "black"
   },
   separator: {
     marginVertical: 8,
-    borderBottomColor: '#737373',
+    borderBottomColor: '#73737300',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   inputContainer: {
-    marginTop: 64,
-    marginBottom: 58,
+    marginTop: 20,
+    marginBottom: 20,
   },
   socialContainer: {
     marginTop: 72,
     marginBottom: 8,
-  },
-  googlebutton: {
-    backgroundColor: '#f15f5c',
-    marginTop: 8,
-    width: 232,
-    height: 40,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 5,
-    flexDirection: 'row',
-  },
-  facebookbutton: {
-    backgroundColor: '#194f7c',
-    width: 232,
-    height: 40,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 5,
-    flexDirection: 'row',
   },
   buttonText: {
     color: '#434343',

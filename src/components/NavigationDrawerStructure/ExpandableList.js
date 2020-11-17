@@ -36,7 +36,7 @@ export default class ExpandableList extends Component {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={this.onButtonPress}
-              style={styles.header}>
+              style={this.props.color}>
               <Text style={styles.headerText}>{this.props.categoria}</Text>
             </TouchableOpacity>
             <View
@@ -56,11 +56,11 @@ export default class ExpandableList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 30,
     backgroundColor: '#F5FCFF',
   },
   header: {
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#88c9bf',
+    paddingTop: 30,
     padding: 16,
   },
   headerText: {

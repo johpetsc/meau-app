@@ -11,34 +11,22 @@ import {
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import firestore from '@react-native-firebase/firestore';
 import AnimalBox from '../../components/AnimalBox';
+import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
 
-const Adotar = ({navigation}) => {
+const Animais = ({navigation}) => {
   const [listaAnimais, setListaAnimais] = useState([]);
   const [listaIds, setListaIds] = useState([]);
 
   const onPetPress = () => {
-    console.log(listaIds);
-    firestore()
-      .collection(
-        'usuarios/SULKDjHeZQeEdgtlejit/animais/' + listaIds[0] + '/pedidos',
-      )
-      .add({
-        interessado: '',
-        tipo: 'Adoção',
-      })
-      .then(() => {
-        console.log('Pedido feito!');
-      });
-  };
-
-  const onButtonPress = () => {
-    console.log(listaAnimais._W[0]);
+    console.log("a");
   };
 
   const fetchAnimais = async (animais, ids) => {
+    const user = auth().currentUser;
     const Documents = await firestore()
       .collectionGroup('animais')
+      .where('sexo', '==', 'Macho')
       .get()
       .then((querrySnapshot) => {
         querrySnapshot.forEach((documentSnapshot) => {
@@ -109,4 +97,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Adotar;
+export default Animais;
