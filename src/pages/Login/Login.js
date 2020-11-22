@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   Button,
   View,
@@ -12,8 +12,12 @@ import TextBox from '../../components/TextBoxComponents/TextBox';
 import Icon from 'react-native-vector-icons/Entypo';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
+import UserData from '../../contexts/UserData';
+import fetchUser from './fetchUser';
 
 const Login = ({navigation}) => {
+  const [dadosUsuario, setDadosUsuario] = useContext(UserData);
+
   const [dados, setDados] = useState({
     'e-mail': '',
     password: '',
@@ -27,6 +31,9 @@ const Login = ({navigation}) => {
         messaging()
           .subscribeToTopic('user_' + user.uid)
           .then(() => console.log('Subscribed to the topic!'));
+        // fetchUser(user.uid).then((res) => {
+        //   setDadosUsuario({...res, username: user.email});
+        // });
         navigation.navigate('Usuario');
         console.log('User signed in!');
       })

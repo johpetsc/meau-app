@@ -11,12 +11,12 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import TextBox from '../../components/TextBoxComponents/TextBox';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import CheckBox from '@react-native-community/checkbox';
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-picker';
+import UserData from '../../contexts/UserData';
 
 const CadastroAnimal = ({navigation}) => {
   const [dados, setDados] = useState({
@@ -32,22 +32,23 @@ const CadastroAnimal = ({navigation}) => {
     idade: 'Filhote',
   });
 
+  const [userData] = useContext(UserData);
+
   const [response, setResponse] = useState({});
 
   const handlePress = async () => {
-    const user = auth().currentUser;
-    console.log(user.uid);
-    const reference = storage().ref('animal_photo/' + user.uid + dados.nome);
+    const reference = storage().ref('animal_photo/' + userData.id + dados.nome);
     if (response.uri) {
       console.log('entrou');
       await reference.putFile(response.uri);
     }
     firestore()
-      .collection('usuarios/' + user.uid + '/animais')
+      .collection('usuarios/' + userData.id + '/animais')
       .add({
         ...dados,
         imageRef: response?.uri ? reference.fullPath : '',
-        userRef: user.uid,
+        userRef: userData.id,
+        endereco: userData.endereco,
       })
       .then(() => {
         console.log('Animal added!');

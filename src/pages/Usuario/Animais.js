@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   Button,
   View,
@@ -11,22 +11,23 @@ import {
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import firestore from '@react-native-firebase/firestore';
 import AnimalBox from '../../components/AnimalBox';
-import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
+import UserData from '../../contexts/UserData';
 
 const Animais = ({navigation}) => {
   const [listaAnimais, setListaAnimais] = useState([]);
   const [listaIds, setListaIds] = useState([]);
+  const [userData] = useContext(UserData);
 
   const onPetPress = () => {
-    console.log("a");
+    console.log('a');
   };
 
   const fetchAnimais = async (animais, ids) => {
-    const user = auth().currentUser;
     const Documents = await firestore()
-      .collectionGroup('animais')
-      .where('sexo', '==', 'Macho')
+      .collection('usuarios')
+      .doc(userData.id)
+      .collection('animais')
       .get()
       .then((querrySnapshot) => {
         querrySnapshot.forEach((documentSnapshot) => {
