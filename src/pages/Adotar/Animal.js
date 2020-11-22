@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   Button,
   View,
@@ -10,89 +10,91 @@ import {
   ScrollView,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Entypo';
 import firestore from '@react-native-firebase/firestore';
 import sendMessage from '../../services/mensagemPedido';
+import UserData from '../../contexts/UserData';
 
-const onPetPress = (id, dados) => {
-    console.log(dados);
-    firestore()
-      .collection(
-        'usuarios/SULKDjHeZQeEdgtlejit/animais/' + id + '/pedidos',
-      )
-      .add({
-        interessado: '',
-        tipo: 'Adoção',
-      })
-      .then(async () => {
-        await sendMessage();
-        console.log('Pedido feito!');
-      });
-  };
-
+const onPetPress = (id, dados, userId, nome) => {
+  console.log(dados);
+  firestore()
+    .collection('usuarios/' + dados.userRef + '/animais/' + id + '/pedidos')
+    .add({
+      tipo: 'Adoção',
+      userRef: userId,
+      animalRef: id,
+    })
+    .then(async () => {
+      await sendMessage(dados.userRef, nome, dados.nome);
+      console.log('Pedido feito!');
+    });
+};
 
 const Animal = ({route, navigation}) => {
-    const id = route.params.id;
-    const dados = route.params.dados;
+  const [userData] = useContext(UserData);
+  const id = route.params.id;
+  const dados = route.params.dados;
   return (
     <ScrollView style={{flex: 1}}>
       <Image
-          source={{uri: dados.url} || require('../../images/Meau_Icone.png')}
-          style={styles.imagem}
-        />
+        source={{uri: dados.url} || require('../../images/Meau_Icone.png')}
+        style={styles.imagem}
+      />
       <Text style={styles.usertexto}>{dados.nome}</Text>
       <View style={styles.inputContainer}>
         <View style={styles.rowContainer}>
-            <View>
-                <Text style={styles.texto}>SEXO</Text>
-                <Text style={styles.textomenor}>{dados.sexo}</Text>
-            </View>
-            <View>
-                <Text style={styles.texto}>PORTE</Text>
-                <Text style={styles.textomenor}>{dados.porte}</Text>
-            </View>
-            <View>
-                <Text style={styles.texto}>IDADE</Text>
-                <Text style={styles.textomenor}>Adulto</Text>
-            </View>
+          <View>
+            <Text style={styles.texto}>SEXO</Text>
+            <Text style={styles.textomenor}>{dados.sexo}</Text>
+          </View>
+          <View>
+            <Text style={styles.texto}>PORTE</Text>
+            <Text style={styles.textomenor}>{dados.porte}</Text>
+          </View>
+          <View>
+            <Text style={styles.texto}>IDADE</Text>
+            <Text style={styles.textomenor}>Adulto</Text>
+          </View>
         </View>
         <View style={styles.separator} />
         <Text style={styles.texto}>LOCALIZAÇÃO</Text>
         <Text style={styles.textomenor}>Samambaia Sul - Distrito Federal</Text>
         <View style={styles.separator} />
         <View style={styles.rowContainer}>
-            <View>
-                <Text style={styles.texto}>CASTRADO</Text>
-                <Text style={styles.textomenor}>Não</Text>
-            </View>
-            <View>
-                <Text style={styles.texto}>VERMIFUGO</Text>
-                <Text style={styles.textomenor}>Sim</Text>
-            </View>
+          <View>
+            <Text style={styles.texto}>CASTRADO</Text>
+            <Text style={styles.textomenor}>Não</Text>
+          </View>
+          <View>
+            <Text style={styles.texto}>VERMIFUGO</Text>
+            <Text style={styles.textomenor}>Sim</Text>
+          </View>
         </View>
         <View style={styles.rowContainer}>
-            <View>
-                <Text style={styles.texto}>VACINADO</Text>
-                <Text style={styles.textomenor}>Não</Text>
-            </View>
-            <View>
-                <Text style={styles.texto}>DOENÇAS    </Text>
-                <Text style={styles.textomenor}>Nenhuma</Text>
-            </View>
+          <View>
+            <Text style={styles.texto}>VACINADO</Text>
+            <Text style={styles.textomenor}>Não</Text>
+          </View>
+          <View>
+            <Text style={styles.texto}>DOENÇAS </Text>
+            <Text style={styles.textomenor}>Nenhuma</Text>
+          </View>
         </View>
         <View style={styles.separator} />
         <Text style={styles.texto}>TEMPERAMENTO</Text>
         <Text style={styles.textomenor}>{dados.temperamento}</Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>EXIGÊNCIA DO DOADOR</Text>
-        <Text style={styles.textomenor}>Termo de adoção, fotos da casa, visita prévia e acompanhamento durante três meses</Text>
+        <Text style={styles.textomenor}>
+          Termo de adoção, fotos da casa, visita prévia e acompanhamento durante
+          três meses
+        </Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>MAIS SOBRE BIDU</Text>
         <Text style={styles.textomenor}>{dados.sobre}</Text>
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => onPetPress(id, dados)}>
+        onPress={() => onPetPress(id, dados, userData.id, userData.nome)}>
         <Text style={styles.buttonText}>PRETENDO ADOTAR</Text>
       </TouchableOpacity>
       <View style={styles.separator} />
@@ -129,11 +131,11 @@ const styles = StyleSheet.create({
   },
   imagem: {
     width: Dimensions.get('window').width,
-    height: 180, 
+    height: 180,
     alignSelf: 'center',
-    overflow: "hidden",
+    overflow: 'hidden',
     borderWidth: 0.5,
-    borderColor: "black"
+    borderColor: 'black',
   },
   separator: {
     marginVertical: 8,
@@ -144,12 +146,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginLeft: 20,
   },
- rowContainer: {
+  rowContainer: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginRight: 50
- }
+    marginRight: 50,
+  },
 });
 
 export default Animal;

@@ -29,7 +29,7 @@ function App() {
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      Alert.alert(remoteMessage.data.title, remoteMessage.data.message);
     });
 
     return unsubscribe;
