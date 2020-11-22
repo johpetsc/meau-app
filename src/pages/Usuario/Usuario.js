@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   Button,
   View,
@@ -14,65 +14,44 @@ import Icon from 'react-native-vector-icons/Entypo';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
-
-async function fetchUser() {
-  const user = auth().currentUser;
-  const userDocument = await firestore()
-    .collection('usuarios')
-    .doc(user.uid)
-    .get()
-    .then((documentSnapshot) => {
-      console.log(documentSnapshot.data().imageRef);
-      return documentSnapshot.data();
-    });
-  try{
-    if (userDocument.imageRef) {
-      console.log(userDocument.imageRef);
-      const url = await storage().ref(userDocument.imageRef).getDownloadURL();
-      userDocument.imageRef = url
-    }
-    }catch(e){
-      console.log(e)
-    }
-    console.log(userDocument.imageRef)
-  return userDocument;
-}
-
-const userDocument = fetchUser();
-const user = auth().currentUser;
+import UserData from '../../contexts/UserData';
 
 const Usuario = ({navigation}) => {
+  const [userData] = useContext(UserData);
+
   return (
     <ScrollView style={{flex: 1}}>
       <View style={styles.separator} />
       <Image
-          source={{uri: userDocument._W?.imageRef} || require('../../images/Meau_Icone.png')}
-          style={styles.imagem}
-        />
+        source={
+          {uri: userData.imageRef} || require('../../images/Meau_Icone.png')
+        }
+        style={styles.imagem}
+      />
       <View style={styles.separator} />
-      <Text style={styles.usertexto}>{userDocument._W?.email}</Text>
+      <Text style={styles.usertexto}>{userData.username}</Text>
       <View style={styles.inputContainer}>
         <View style={styles.separator} />
         <Text style={styles.texto}>NOME COMPLETO</Text>
-        <Text style={styles.textomenor}>{userDocument._W?.nome}</Text>
+        <Text style={styles.textomenor}>{userData.nome}</Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>IDADE</Text>
-        <Text style={styles.textomenor}>{userDocument._W?.idade}</Text>
+        <Text style={styles.textomenor}>{userData.idade}</Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>EMAIL</Text>
-        <Text style={styles.textomenor}>{user.email}</Text>
+        <Text style={styles.textomenor}>{userData.email}</Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>LOCALIZAÇÃO</Text>
-        <Text style={styles.textomenor}>{userDocument._W?.cidade}</Text>
+        <Text style={styles.textomenor}>{userData.cidade}</Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>ENDEREÇO</Text>
-        <Text style={styles.textomenor}>{userDocument._W?.endereco}</Text>
+        <Text style={styles.textomenor}>{userData.endereco}</Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>TELEFONE</Text>
-        <Text style={styles.textomenor}>{userDocument._W?.telefone}</Text>
+        <Text style={styles.textomenor}>{userData.telefone}</Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>NOME DE USUÁRIO</Text>
-        <Text style={styles.textomenor}>{userDocument._W?.nome}</Text>
+        <Text style={styles.textomenor}>{userData.nome}</Text>
       </View>
       <TouchableOpacity
         style={styles.button}
@@ -116,13 +95,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   imagem: {
-    width: 150, 
-    height: 150, 
-    alignSelf: 'center', 
+    width: 150,
+    height: 150,
+    alignSelf: 'center',
     borderRadius: 150 / 2,
-    overflow: "hidden",
+    overflow: 'hidden',
     borderWidth: 0.5,
-    borderColor: "black"
+    borderColor: 'black',
   },
   separator: {
     marginVertical: 8,
