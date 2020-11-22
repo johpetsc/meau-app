@@ -12,26 +12,14 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import firestore from '@react-native-firebase/firestore';
 import AnimalBox from '../../components/AnimalBox';
 import storage from '@react-native-firebase/storage';
-import sendMessage from '../../services/mensagemPedido';
 
 const Adotar = ({navigation}) => {
   const [listaAnimais, setListaAnimais] = useState([]);
   const [listaIds, setListaIds] = useState([]);
 
   const onPetPress = (index) => {
-    console.log(listaIds);
-    firestore()
-      .collection(
-        'usuarios/SULKDjHeZQeEdgtlejit/animais/' + listaIds[index] + '/pedidos',
-      )
-      .add({
-        interessado: '',
-        tipo: 'Adoção',
-      })
-      .then(async () => {
-        await sendMessage();
-        console.log('Pedido feito!');
-      });
+    console.log(listaAnimais[index])
+    navigation.navigate('Animal', {id:listaIds[index], dados:listaAnimais[index]});
   };
 
   const onButtonPress = () => {

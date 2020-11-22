@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Usuario from '../pages/Usuario/Usuario';
 import Animais from '../pages/Usuario/Animais';
+import Pet from '../pages/Usuario/Pet';
 import Stack from './SharedStack';
 import {Image, TouchableOpacity, View} from 'react-native';
 
@@ -48,7 +49,24 @@ export default function UsuarioStack({navigation}) {
         name="Animais"
         component={Animais}
         options={{
-          title: 'Animais', //Set Header Title
+          title: 'Meus Pets', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerStructure navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#cfe9e5', //Set Header color
+          },
+          headerTintColor: '#434343', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Pet"
+        component={Pet}
+        options={{
+          title: 'Pet', //Set Header Title
           headerLeft: () => (
             <NavigationDrawerStructure navigationProps={navigation} />
           ),
