@@ -11,6 +11,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import TextBox from '../../components/TextBoxComponents/TextBox';
 import Icon from 'react-native-vector-icons/Entypo';
 import auth from '@react-native-firebase/auth';
+import messaging from '@react-native-firebase/messaging';
 
 const Login = ({navigation}) => {
   const [dados, setDados] = useState({
@@ -22,11 +23,15 @@ const Login = ({navigation}) => {
     auth()
       .signInWithEmailAndPassword(dados['e-mail'], dados.password)
       .then(() => {
-        navigation.navigate('Usuario')
+        const user = auth().currentUser;
+        messaging()
+          .subscribeToTopic('user_' + user.uid)
+          .then(() => console.log('Subscribed to the topic!'));
+        navigation.navigate('Usuario');
         console.log('User signed in!');
       })
       .catch((error) => {
-        navigation.navigate('LoginErro')
+        navigation.navigate('LoginErro');
         if (error.code === 'auth/email-already-in-use') {
           console.log('That email address is already in use!');
         }
