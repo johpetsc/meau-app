@@ -5,6 +5,13 @@ import Pet from '../pages/Usuario/Pet';
 import Interessados from '../pages/Usuario/Interessados';
 import Stack from './SharedStack';
 import {Image, TouchableOpacity, View} from 'react-native';
+import {useEffect} from 'react';
+import {createStackNavigator} from '@react-navigation/stack';
+import {StackActions} from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+
+const UserStack = createStackNavigator();
 
 const NavigationDrawerStructure = (props) => {
   //Structure for the navigation Drawer
@@ -28,8 +35,8 @@ const NavigationDrawerStructure = (props) => {
 
 export default function UsuarioStack({navigation}) {
   return (
-    <Stack.Navigator initialRouteName="Usuario">
-      <Stack.Screen
+    <UserStack.Navigator initialRouteName="Usuario">
+      <UserStack.Screen
         name="Usuario"
         component={Usuario}
         options={{
@@ -46,7 +53,7 @@ export default function UsuarioStack({navigation}) {
           },
         }}
       />
-      <Stack.Screen
+      <UserStack.Screen
         name="Animais"
         component={Animais}
         options={{
@@ -63,7 +70,7 @@ export default function UsuarioStack({navigation}) {
           },
         }}
       />
-      <Stack.Screen
+      <UserStack.Screen
         name="Pet"
         component={Pet}
         options={{
@@ -80,7 +87,7 @@ export default function UsuarioStack({navigation}) {
           },
         }}
       />
-      <Stack.Screen
+      <UserStack.Screen
         name="Interessados"
         component={Interessados}
         options={{
@@ -97,6 +104,6 @@ export default function UsuarioStack({navigation}) {
           },
         }}
       />
-    </Stack.Navigator>
+    </UserStack.Navigator>
   );
 }
