@@ -7,6 +7,13 @@ import Oba from '../pages/Usuario/Oba';
 import Interessados from '../pages/Usuario/Interessados';
 import Stack from './SharedStack';
 import {Image, TouchableOpacity, View} from 'react-native';
+import {useEffect} from 'react';
+import {createStackNavigator} from '@react-navigation/stack';
+import {StackActions} from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+
+const UserStack = createStackNavigator();
 
 const NavigationDrawerStructure = (props) => {
   //Structure for the navigation Drawer
@@ -30,8 +37,8 @@ const NavigationDrawerStructure = (props) => {
 
 export default function UsuarioStack({navigation}) {
   return (
-    <Stack.Navigator initialRouteName="Usuario">
-      <Stack.Screen
+    <UserStack.Navigator initialRouteName="Usuario">
+      <UserStack.Screen
         name="Usuario"
         component={Usuario}
         options={{
@@ -48,6 +55,57 @@ export default function UsuarioStack({navigation}) {
           },
         }}
       />
-    </Stack.Navigator>
+      <UserStack.Screen
+        name="Animais"
+        component={Animais}
+        options={{
+          title: 'Meus Pets', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerStructure navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#cfe9e5', //Set Header color
+          },
+          headerTintColor: '#434343', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+      <UserStack.Screen
+        name="Pet"
+        component={Pet}
+        options={{
+          title: 'Pet', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerStructure navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#cfe9e5', //Set Header color
+          },
+          headerTintColor: '#434343', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+      <UserStack.Screen
+        name="Interessados"
+        component={Interessados}
+        options={{
+          title: 'Interessados', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerStructure navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#cfe9e5', //Set Header color
+          },
+          headerTintColor: '#434343', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+    </UserStack.Navigator>
   );
 }
