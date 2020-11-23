@@ -11,10 +11,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class ManifestButton extends PureComponent {
   render() {
-    const {nome, sexo, idade, porte, endereco, imagem} = this.props;
+    const {nome, sexo, idade, porte, endereco, imagem, cor} = this.props;
     return (
       <View style={styles.button}>
-        <View style={styles.titulo}>
+        <View style={cor}>
           <Text>{nome}</Text>
           <Icon color={'black'} name={'heart'} size={15} />
         </View>
@@ -34,10 +34,6 @@ export default class ManifestButton extends PureComponent {
     );
   }
 }
-
-const colors = {
-  amarelo: '#ffd35880',
-};
 
 const styles = StyleSheet.create({
   labelStyle: {
