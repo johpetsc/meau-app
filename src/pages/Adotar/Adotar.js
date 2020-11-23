@@ -71,7 +71,7 @@ const Adotar = ({navigation}) => {
             sexo={item.sexo}
             idade={item.idade}
             porte={item.porte}
-            endereco={'SAMAMBAIA SUL - DISTRITO FEDERAL '}
+            endereco={item.endereco}
             imagem={{uri: item.url} || require('../../images/Meau_Icone.png')}
           />
         </TouchableOpacity>

@@ -18,7 +18,7 @@ const onPetPress = (id, dados) => {
     console.log(dados);
     firestore()
       .collection(
-        'usuarios/SULKDjHeZQeEdgtlejit/animais/' + id + '/pedidos',
+        'usuarios/' + dados.userRef + '/animais/' + id + '/pedidos',
       )
       .add({
         interessado: '',
@@ -53,12 +53,12 @@ const Animal = ({route, navigation}) => {
             </View>
             <View>
                 <Text style={styles.texto}>IDADE</Text>
-                <Text style={styles.textomenor}>Adulto</Text>
+                <Text style={styles.textomenor}>{dados.idade}</Text>
             </View>
         </View>
         <View style={styles.separator} />
         <Text style={styles.texto}>LOCALIZAÇÃO</Text>
-        <Text style={styles.textomenor}>Samambaia Sul - Distrito Federal</Text>
+        <Text style={styles.textomenor}>{dados.endereco}</Text>
         <View style={styles.separator} />
         <View style={styles.rowContainer}>
             <View>
@@ -85,7 +85,7 @@ const Animal = ({route, navigation}) => {
         <Text style={styles.textomenor}>{dados.temperamento}</Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>EXIGÊNCIA DO DOADOR</Text>
-        <Text style={styles.textomenor}>Termo de adoção, fotos da casa, visita prévia e acompanhamento durante três meses</Text>
+        <Text style={styles.textomenor}>{dados.exigencias}</Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>MAIS SOBRE BIDU</Text>
         <Text style={styles.textomenor}>{dados.sobre}</Text>

@@ -13,26 +13,15 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Entypo';
 import firestore from '@react-native-firebase/firestore';
 
-const onPetPress = (id, dados) => {
-    console.log(dados);
-    firestore()
-      .collection(
-        'usuarios/SULKDjHeZQeEdgtlejit/animais/' + id + '/pedidos',
-      )
-      .add({
-        interessado: '',
-        tipo: 'Adoção',
-      })
-      .then(async () => {
-        await sendMessage();
-        console.log('Pedido feito!');
-      });
-  };
-
 
 const Pet = ({route, navigation}) => {
     const id = route.params.id;
     const dados = route.params.dados;
+
+    const onInteressados = async (id, dados) => {  
+        navigation.navigate('Interessados', {id:id, dados:dados});
+    };
+
   return (
     <ScrollView style={{flex: 1}}>
       <Image
@@ -89,11 +78,19 @@ const Pet = ({route, navigation}) => {
         <Text style={styles.texto}>MAIS SOBRE BIDU</Text>
         <Text style={styles.textomenor}>{dados.sobre}</Text>
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => onPetPress(id, dados)}>
-        <Text style={styles.buttonText}>PRETENDO ADOTAR</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+            style={styles.button}
+            onPress={() => onInteressados(id, dados)}>
+            <Text style={styles.textomenor}>VER INTERESSADOS</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+            style={styles.button}
+            onPress={() => onRemove(id, dados)}>
+            <Text style={styles.textomenor}>REMOVER PET</Text>
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.separator} />
     </ScrollView>
   );
@@ -101,8 +98,8 @@ const Pet = ({route, navigation}) => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#ffd358',
-    width: 232,
+    backgroundColor: '#88c9bf',
+    width: 150,
     height: 40,
     alignItems: 'center',
     alignSelf: 'center',
@@ -112,7 +109,7 @@ const styles = StyleSheet.create({
   texto: {
     fontSize: 15,
     fontFamily: 'Roboto',
-    color: '#ffd339',
+    color: '#589b9b',
   },
   textomenor: {
     padding: 0,
@@ -148,6 +145,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginRight: 50
+ },
+ buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 20,
+    marginRight: 20
  }
 });
 
