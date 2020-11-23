@@ -14,6 +14,7 @@ import firestore from '@react-native-firebase/firestore';
 import sendMessage from '../../services/mensagemPedido';
 import UserData from '../../contexts/UserData';
 
+
 const onPetPress = (id, dados, userId, nome) => {
   console.log(dados);
   firestore()
@@ -42,22 +43,22 @@ const Animal = ({route, navigation}) => {
       <Text style={styles.usertexto}>{dados.nome}</Text>
       <View style={styles.inputContainer}>
         <View style={styles.rowContainer}>
-          <View>
-            <Text style={styles.texto}>SEXO</Text>
-            <Text style={styles.textomenor}>{dados.sexo}</Text>
-          </View>
-          <View>
-            <Text style={styles.texto}>PORTE</Text>
-            <Text style={styles.textomenor}>{dados.porte}</Text>
-          </View>
-          <View>
-            <Text style={styles.texto}>IDADE</Text>
-            <Text style={styles.textomenor}>Adulto</Text>
-          </View>
+            <View>
+                <Text style={styles.texto}>SEXO</Text>
+                <Text style={styles.textomenor}>{dados.sexo}</Text>
+            </View>
+            <View>
+                <Text style={styles.texto}>PORTE</Text>
+                <Text style={styles.textomenor}>{dados.porte}</Text>
+            </View>
+            <View>
+                <Text style={styles.texto}>IDADE</Text>
+                <Text style={styles.textomenor}>{dados.idade}</Text>
+            </View>
         </View>
         <View style={styles.separator} />
         <Text style={styles.texto}>LOCALIZAÇÃO</Text>
-        <Text style={styles.textomenor}>Samambaia Sul - Distrito Federal</Text>
+        <Text style={styles.textomenor}>{dados.endereco}</Text>
         <View style={styles.separator} />
         <View style={styles.rowContainer}>
           <View>
@@ -84,10 +85,7 @@ const Animal = ({route, navigation}) => {
         <Text style={styles.textomenor}>{dados.temperamento}</Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>EXIGÊNCIA DO DOADOR</Text>
-        <Text style={styles.textomenor}>
-          Termo de adoção, fotos da casa, visita prévia e acompanhamento durante
-          três meses
-        </Text>
+        <Text style={styles.textomenor}>{dados.exigencias}</Text>
         <View style={styles.separator} />
         <Text style={styles.texto}>MAIS SOBRE BIDU</Text>
         <Text style={styles.textomenor}>{dados.sobre}</Text>

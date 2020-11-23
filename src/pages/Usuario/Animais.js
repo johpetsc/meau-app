@@ -19,8 +19,8 @@ const Animais = ({navigation}) => {
   const [listaIds, setListaIds] = useState([]);
   const [userData] = useContext(UserData);
 
-  const onPetPress = () => {
-    console.log('a');
+  const onPetPress = (index) => {
+    navigation.navigate('Pet', {id:listaIds[index], dados:listaAnimais[index]});
   };
 
   const fetchAnimais = async (animais, ids) => {
@@ -64,13 +64,13 @@ const Animais = ({navigation}) => {
         <TouchableOpacity
           key={index}
           style={styles.card}
-          onPress={() => onPetPress()}>
+          onPress={() => onPetPress(index)}>
           <AnimalBox
             nome={item.nome}
             sexo={item.sexo}
             idade={item.idade}
             porte={item.porte}
-            endereco={'SAMAMBAIA SUL - DISTRITO FEDERAL '}
+            endereco={item.endereco}
             imagem={{uri: item.url} || require('../../images/Meau_Icone.png')}
           />
         </TouchableOpacity>
