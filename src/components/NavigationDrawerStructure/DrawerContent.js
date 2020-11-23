@@ -1,33 +1,74 @@
 import * as React from 'react';
-import {Button, View, Text, SafeAreaView, StyleSheet, Dimensions, Image} from 'react-native';
-import {createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem} from '@react-navigation/drawer';
-import ExpandableList from './ExpandableList'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {
+  Button,
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  Dimensions,
+  Image,
+} from 'react-native';
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer';
+import ExpandableList from './ExpandableList';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import auth from '@react-native-firebase/auth';
+import {useContext, useEffect, useState} from 'react';
+import UserData from '../../contexts/UserData';
 
-export default function CustomDrawerContent(props){
+export default function CustomDrawerContent(props) {
+  const [itemList, setItemList] = useState(props.state);
+  const [rest, setRest] = useState(props);
+  const [userData] = useContext(UserData);
+
+  useEffect(() => {
+    const {state, ...others} = props;
+    const newState = {...state};
+    if (userData.id) {
+      newState.routes = newState.routes.filter((item) => item.params.logged);
+    } else {
+      newState.routes = newState.routes.filter((item) => !item.params.logged);
+    }
+    setItemList({...newState});
+    setRest(others);
+  }, [props, userData]);
+
   const onButtonPress = () => {
     auth()
       .signOut()
       .then(() => console.log('User signed out!'));
   };
-    return(
-      <DrawerContentScrollView {...props}>
-        <View style={{backgroundColor: '#88c9bf'}}>
-          <View style={{paddingTop: 30, paddingLeft: 10, paddingBottom: 20}}>
-            <Image
-              source={require('../../images/Meau_Icone.png')}
-              style={styles.imagem}
-            />
-          </View>
-            <ExpandableList color = {styles.headerUser}categoria = {'Nome usuario'}lista = {<DrawerItemList {...props} />}/>
-            <ExpandableList color = {styles.headerAtalhos}categoria = {'Atalhos'}lista = {<DrawerItemList {...props} />}/>
-            <TouchableOpacity onPress={() => onButtonPress()}>
-              <Text style={styles.textomenor}>Sair</Text>
-            </TouchableOpacity>
+  return (
+    <DrawerContentScrollView {...props}>
+      <View style={{backgroundColor: '#88c9bf'}}>
+        <View style={{paddingTop: 30, paddingLeft: 10, paddingBottom: 20}}>
+          <Image
+            source={
+              {uri: userData.imageRef} || require('../../images/Meau_Icone.png')
+            }
+            style={styles.imagem}
+          />
         </View>
-      </DrawerContentScrollView>
-    )
+        <ExpandableList
+          color={styles.headerUser}
+          categoria={userData.nome || 'Bem-Vindo!'}
+          lista={<DrawerItemList state={itemList} {...rest} />}
+        />
+        <ExpandableList
+          color={styles.headerAtalhos}
+          categoria={'Atalhos'}
+          lista={<DrawerItemList {...props} />}
+        />
+        <TouchableOpacity onPress={() => onButtonPress()}>
+          <Text style={styles.textomenor}>Sair</Text>
+        </TouchableOpacity>
+      </View>
+    </DrawerContentScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -41,13 +82,13 @@ const styles = StyleSheet.create({
   },
   imagem: {
     padding: 1,
-    width: 60, 
+    width: 60,
     height: 60,
     alignSelf: 'flex-start',
     borderRadius: 150 / 2,
-    overflow: "hidden",
+    overflow: 'hidden',
     borderWidth: 0.5,
-    borderColor: "black"
+    borderColor: 'black',
   },
   headerUser: {
     backgroundColor: '#88c9bf',
