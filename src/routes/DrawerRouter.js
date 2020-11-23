@@ -9,6 +9,7 @@ import CadastroPessoalStack from './CadastroPessoalStack';
 import CadastroAnimalStack from './CadastroAnimalStack';
 import AdotarStack from './AdotarStack';
 import UsuarioStack from './UsuarioStack';
+import AnimaisStack from './AnimaisStack';
 import DrawerContent from '../components/NavigationDrawerStructure/DrawerContent';
 
 const Drawer = createDrawerNavigator();
@@ -37,19 +38,25 @@ export default function DrawerRouter() {
         name="CadastroAnimal"
         options={{drawerLabel: 'Cadastro Animal', unmountOnBlur: true}}
         component={CadastroAnimalStack}
-        initialParams={{logged: true}}
+        initialParams={{logged: false}}
       />
       <Drawer.Screen
         name="Usuario"
-        options={{drawerLabel: 'Usuario', unmountOnBlur: true}}
+        options={{drawerLabel: 'Meu perfil', unmountOnBlur: true}}
         component={UsuarioStack}
+        initialParams={{logged: true}}
+      />
+      <Drawer.Screen
+        name="Animais"
+        options={{drawerLabel: 'Meus pets', unmountOnBlur: true}}
+        component={AnimaisStack}
         initialParams={{logged: true}}
       />
       <Drawer.Screen
         name="AdotarStack"
         options={{drawerLabel: 'Adotar', unmountOnBlur: true}}
         component={AdotarStack}
-        initialParams={{logged: true}}
+        initialParams={{logged: false}}
       />
     </Drawer.Navigator>
   );

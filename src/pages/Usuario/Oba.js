@@ -9,26 +9,25 @@ import {
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const LoginErro = ({navigation}) => {
+const Oba = ({route, navigation}) => {
+    const nome = route.params.nome;
+
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Text style={styles.message}>Ops!</Text>
+      <Text style={styles.message}>Oba!</Text>
       <View>
         <Text style={styles.text}>
-          Você não pode realizar esta ação sem possuir um cadastro.
+          Ficamos muito felizes com o sucesso do seu processo! Esperamos que o bichinho esteja curtindo muito essa nova experiência!
         </Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('CadastroPessoal')}>
-          <Text style={styles.buttonText}>FAZER CADASTRO</Text>
-        </TouchableOpacity>
+        <Text style={styles.text}>
+          Agora, que tal compartilhar a história do {nome} com todos os outros membros do Meau?
+        </Text>
       </View>
       <View>
-        <Text style={styles.text}>Já possui cadastro?</Text>
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.buttonText}>FAZER LOGIN</Text>
+          <Text style={styles.buttonText}>COMPARTILHAR HISTÓRIA</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -38,7 +37,7 @@ const LoginErro = ({navigation}) => {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: '#88c9bf',
-    marginTop: 16,
+    marginTop: 50,
     marginBottom: 44,
     width: 232,
     height: 40,
@@ -51,31 +50,6 @@ const styles = StyleSheet.create({
     marginTop: 64,
     marginBottom: 58,
   },
-  socialContainer: {
-    marginTop: 72,
-    marginBottom: 8,
-  },
-  googlebutton: {
-    backgroundColor: '#f15f5c',
-    marginTop: 8,
-    width: 232,
-    height: 40,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 5,
-    flexDirection: 'row',
-  },
-  facebookbutton: {
-    backgroundColor: '#194f7c',
-    width: 232,
-    height: 40,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 5,
-    flexDirection: 'row',
-  },
   buttonText: {
     color: '#434343',
     fontFamily: 'roboto',
@@ -83,9 +57,11 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#757575',
-    fontSize: 14,
+    fontSize: 17,
+    marginHorizontal: 30,
     fontFamily: 'roboto',
     textAlign: 'center',
+    marginBottom: 30
   },
   message: {
     color: '#88c9bf',
@@ -96,4 +72,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginErro;
+export default Oba;
