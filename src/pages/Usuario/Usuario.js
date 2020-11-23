@@ -1,19 +1,6 @@
 import React, {useContext, useState} from 'react';
-import {
-  Button,
-  View,
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  Dimensions,
-  Image,
-  ScrollView,
-} from 'react-native';
+import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Entypo';
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
-import storage from '@react-native-firebase/storage';
 import UserData from '../../contexts/UserData';
 
 const Usuario = ({navigation}) => {

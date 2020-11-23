@@ -35,10 +35,6 @@ function App() {
     return unsubscribe;
   }, []);
 
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
-
   return (
     <UserData.Provider value={[state, setState]}>
       <NavigationContainer>
