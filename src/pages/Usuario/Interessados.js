@@ -20,7 +20,7 @@ const Interessados = ({route, navigation}) => {
     const dados = route.params.dados;
 
     const onChat = () => {
-        console.log(interessados)
+        navigation.navigate('Processo', {interessados:listaInteressados, id:id, user:dados.userRef, nome:dados.nome});
     }
   const [listaInteressados, setListaInteressados] = useState([]);
   const [listaIds, setListaIds] = useState([]);

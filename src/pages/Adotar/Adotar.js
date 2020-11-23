@@ -71,6 +71,7 @@ const Adotar = ({navigation}) => {
             sexo={item.sexo}
             idade={item.idade}
             porte={item.porte}
+            cor={styles.titulo}
             endereco={item.endereco}
             imagem={{uri: item.url} || require('../../images/Meau_Icone.png')}
           />
@@ -78,6 +79,10 @@ const Adotar = ({navigation}) => {
       ))}
     </ScrollView>
   );
+};
+
+const colors = {
+  amarelo: '#ffd35880',
 };
 
 const styles = StyleSheet.create({
@@ -89,6 +94,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     elevation: 5,
+  },
+  titulo: {
+    padding: 10,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: colors.amarelo,
+    marginBottom: -50,
   },
   texto: {
     padding: 0,
