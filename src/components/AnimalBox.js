@@ -55,14 +55,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
   },
-  titulo: {
-    padding: 10,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: colors.amarelo,
-    marginBottom: -50,
-  },
   viewAcao: {
     flex: 1,
     flexDirection: 'row',
