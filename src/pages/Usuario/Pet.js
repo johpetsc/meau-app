@@ -75,7 +75,7 @@ const Pet = ({route, navigation}) => {
         <Text style={styles.texto}>EXIGÊNCIA DO DOADOR</Text>
         <Text style={styles.textomenor}>Termo de adoção, fotos da casa, visita prévia e acompanhamento durante três meses</Text>
         <View style={styles.separator} />
-        <Text style={styles.texto}>MAIS SOBRE BIDU</Text>
+        <Text style={styles.texto}>MAIS SOBRE {dados.nome}</Text>
         <Text style={styles.textomenor}>{dados.sobre}</Text>
       </View>
       <View style={styles.buttonContainer}>

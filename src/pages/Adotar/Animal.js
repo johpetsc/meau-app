@@ -87,7 +87,7 @@ const Animal = ({route, navigation}) => {
         <Text style={styles.texto}>EXIGÊNCIA DO DOADOR</Text>
         <Text style={styles.textomenor}>{dados.exigencias}</Text>
         <View style={styles.separator} />
-        <Text style={styles.texto}>MAIS SOBRE BIDU</Text>
+        <Text style={styles.texto}>MAIS SOBRE {dados.nome}</Text>
         <Text style={styles.textomenor}>{dados.sobre}</Text>
       </View>
       <TouchableOpacity
