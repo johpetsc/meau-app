@@ -19,21 +19,45 @@ const Processo = ({route, navigation}) => {
     const id = route.params.id;
     const user = route.params.user;
     const nome = route.params.nome;
+    const animal = route.params.dadosAnimal;
 
-    const onFinalizar = () => {
-        navigation.navigate('Oba', {nome:nome});
+    const getUser = () => {
+      for (const item of interessados) {
+        if (item.nome == dados.usuario)
+          return item.email
+      }
+      
+    };
+    async function deletePedidos(){
+      const pedidosQuerySnapshot = await firestore()
+      .collection('usuarios').doc(user).collection('animais').doc(id).collection('pedidos')
+      .get();
+      const batch = firestore().batch();
+    
+      pedidosQuerySnapshot.forEach(documentSnapshot => {
+        batch.delete(documentSnapshot.ref);
+      });
+    
+      return batch.commit();
     }
 
-    const fetchPet = async () => {
-        var pet
-        const Document = await firestore().collection('usuarios').doc(user).collection('animais').doc(id).get()
-        .then((doc) => {
-            pet = doc.data().nome
-            return doc.data().nome
-        });
-        return pet
-    } 
-    const pet = fetchPet()
+    const onFinalizar = () => {
+      const para = getUser()
+      animal.userRef = para
+      deletePedidos().then(() => console.log('Pedidos deletados'))
+      firestore().collection('usuarios').doc(user).collection('animais').doc(id).delete()
+      .then(() => {
+        console.log('Animal deleted!');
+      });
+      firestore().collection('usuarios/' + para + '/animais')
+      .add({
+        ...animal,
+      })
+      .then(() => {
+        console.log('Animal added!');
+      });
+        navigation.navigate('Oba', {nome:nome});
+    }
 
   const [dados, setDados] = useState({
     processo: 'Adoção',
@@ -61,6 +85,7 @@ const Processo = ({route, navigation}) => {
 
   const handleRadioButton = (value, chave) => {
     setDados((prevState) => ({...prevState, [chave]: value}));
+    console.log(dados)
   };
 
   return (

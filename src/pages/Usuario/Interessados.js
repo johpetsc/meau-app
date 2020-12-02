@@ -20,7 +20,7 @@ const Interessados = ({route, navigation}) => {
     const dados = route.params.dados;
 
     const onChat = () => {
-        navigation.navigate('Processo', {interessados:listaInteressados, id:id, user:dados.userRef, nome:dados.nome});
+        navigation.navigate('Processo', {interessados:listaInteressados, id:id, user:dados.userRef, nome:dados.nome, dadosAnimal:dados});
     }
   const [listaInteressados, setListaInteressados] = useState([]);
   const [listaIds, setListaIds] = useState([]);
@@ -33,8 +33,6 @@ const Interessados = ({route, navigation}) => {
         querrySnapshot.forEach((documentSnapshot) => {
           pedidos.push(documentSnapshot.data());
           ids.push(documentSnapshot.id);
-          console.log("FETCH PEDIDOS")
-          console.log(documentSnapshot.id, documentSnapshot.data());
         });
       });
   };
@@ -46,9 +44,8 @@ const Interessados = ({route, navigation}) => {
         .doc(item.userRef)
         .get()
         .then((doc) => {
+            doc.data().email = item.userRef
             interessados.push(doc.data());
-            console.log("FETCH INTERESSADOS")
-            console.log(doc.data());
         });
       }
   };

@@ -22,10 +22,6 @@ const Adotar = ({navigation}) => {
     navigation.navigate('Animal', {id:listaIds[index], dados:listaAnimais[index]});
   };
 
-  const onButtonPress = () => {
-    console.log(listaAnimais._W[0]);
-  };
-
   const fetchAnimais = async (animais, ids) => {
     const Documents = await firestore()
       .collectionGroup('animais')
