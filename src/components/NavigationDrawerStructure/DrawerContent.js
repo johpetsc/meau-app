@@ -55,7 +55,7 @@ export default function CustomDrawerContent(props) {
       .signOut()
       .then(() => {
         console.log('User signed out!');
-        props.navigation.navigate('login');
+        props.navigation.navigate('Login');
       });
   };
   return (
