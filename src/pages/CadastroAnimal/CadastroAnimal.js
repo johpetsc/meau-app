@@ -49,6 +49,7 @@ const CadastroAnimal = ({navigation}) => {
         imageRef: response?.uri ? reference.fullPath : '',
         userRef: userData.id,
         endereco: userData.endereco,
+        tipo: 'adotar',
       })
       .then(() => {
         console.log('Animal added!');

@@ -32,31 +32,31 @@ export default function DrawerRouter() {
         name="CadastroPessoal"
         options={{drawerLabel: 'Cadastro Pessoal', unmountOnBlur: true}}
         component={CadastroPessoalStack}
-        initialParams={{logged: false}}
+        initialParams={{logged: false, atalho: false}}
       />
       <Drawer.Screen
         name="CadastroAnimal"
         options={{drawerLabel: 'Cadastro Animal', unmountOnBlur: true}}
         component={CadastroAnimalStack}
-        initialParams={{logged: false}}
+        initialParams={{logged: true, atalho: true}}
       />
       <Drawer.Screen
         name="Usuario"
         options={{drawerLabel: 'Meu perfil', unmountOnBlur: true}}
         component={UsuarioStack}
-        initialParams={{logged: true}}
+        initialParams={{logged: true, atalho: false}}
       />
       <Drawer.Screen
         name="Animais"
         options={{drawerLabel: 'Meus pets', unmountOnBlur: true}}
         component={AnimaisStack}
-        initialParams={{logged: true}}
+        initialParams={{logged: true, atalho: false}}
       />
       <Drawer.Screen
         name="AdotarStack"
         options={{drawerLabel: 'Adotar', unmountOnBlur: true}}
         component={AdotarStack}
-        initialParams={{logged: false}}
+        initialParams={{logged: true, atalho: true}}
       />
     </Drawer.Navigator>
   );
