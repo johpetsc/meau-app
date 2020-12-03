@@ -8,12 +8,12 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import firestore from '@react-native-firebase/firestore';
 import sendMessage from '../../services/mensagemPedido';
 import UserData from '../../contexts/UserData';
-
 
 const onPetPress = (id, dados, userId, nome) => {
   console.log(dados);
@@ -27,6 +27,10 @@ const onPetPress = (id, dados, userId, nome) => {
     .then(async () => {
       await sendMessage(dados.userRef, nome, dados.nome);
       console.log('Pedido feito!');
+      Alert.alert(
+        'Pedido realizado!',
+        'Seu pedido de adoção foi realizado com sucesso!',
+      );
     });
 };
 
@@ -43,18 +47,18 @@ const Animal = ({route, navigation}) => {
       <Text style={styles.usertexto}>{dados.nome}</Text>
       <View style={styles.inputContainer}>
         <View style={styles.rowContainer}>
-            <View>
-                <Text style={styles.texto}>SEXO</Text>
-                <Text style={styles.textomenor}>{dados.sexo}</Text>
-            </View>
-            <View>
-                <Text style={styles.texto}>PORTE</Text>
-                <Text style={styles.textomenor}>{dados.porte}</Text>
-            </View>
-            <View>
-                <Text style={styles.texto}>IDADE</Text>
-                <Text style={styles.textomenor}>{dados.idade}</Text>
-            </View>
+          <View>
+            <Text style={styles.texto}>SEXO</Text>
+            <Text style={styles.textomenor}>{dados.sexo}</Text>
+          </View>
+          <View>
+            <Text style={styles.texto}>PORTE</Text>
+            <Text style={styles.textomenor}>{dados.porte}</Text>
+          </View>
+          <View>
+            <Text style={styles.texto}>IDADE</Text>
+            <Text style={styles.textomenor}>{dados.idade}</Text>
+          </View>
         </View>
         <View style={styles.separator} />
         <Text style={styles.texto}>LOCALIZAÇÃO</Text>

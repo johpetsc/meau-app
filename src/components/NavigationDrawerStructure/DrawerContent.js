@@ -22,25 +22,41 @@ import UserData from '../../contexts/UserData';
 
 export default function CustomDrawerContent(props) {
   const [itemList, setItemList] = useState(props.state);
+  const [itemListAtalho, setItemListAtalho] = useState(props.state);
   const [rest, setRest] = useState(props);
   const [userData] = useContext(UserData);
 
   useEffect(() => {
     const {state, ...others} = props;
     const newState = {...state};
+    const newStateAtalho = {...state};
     if (userData.id) {
-      newState.routes = newState.routes.filter((item) => item.params.logged);
+      newState.routes = newState.routes.filter(
+        (item) => item.params.logged && !item.params.atalho,
+      );
+      newStateAtalho.routes = newStateAtalho.routes.filter(
+        (item) => item.params.logged && item.params.atalho,
+      );
     } else {
-      newState.routes = newState.routes.filter((item) => !item.params.logged);
+      newState.routes = newState.routes.filter(
+        (item) => !item.params.logged && !item.params.atalho,
+      );
+      newStateAtalho.routes = newStateAtalho.routes.filter(
+        (item) => !item.params.logged && item.params.atalho,
+      );
     }
     setItemList({...newState});
+    setItemListAtalho({...newStateAtalho});
     setRest(others);
   }, [props, userData]);
 
   const onButtonPress = () => {
     auth()
       .signOut()
-      .then(() => console.log('User signed out!'));
+      .then(() => {
+        console.log('User signed out!');
+        props.navigation.navigate('login');
+      });
   };
   return (
     <DrawerContentScrollView {...props}>
@@ -61,7 +77,7 @@ export default function CustomDrawerContent(props) {
         <ExpandableList
           color={styles.headerAtalhos}
           categoria={'Atalhos'}
-          lista={<DrawerItemList {...props} />}
+          lista={<DrawerItemList state={itemListAtalho} {...rest} />}
         />
         <TouchableOpacity onPress={() => onButtonPress()}>
           <Text style={styles.textomenor}>Sair</Text>

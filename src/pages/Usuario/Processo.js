@@ -13,51 +13,64 @@ import RadioButton from '../../components/RadioButton/RadioButton';
 import firestore from '@react-native-firebase/firestore';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import UserData from '../../contexts/UserData';
+import sendMessageAdocao from '../../services/mensagemAdotado';
 
 const Processo = ({route, navigation}) => {
-    const interessados = route.params.interessados;
-    const id = route.params.id;
-    const user = route.params.user;
-    const nome = route.params.nome;
-    const animal = route.params.dadosAnimal;
+  const interessados = route.params.interessados;
+  const id = route.params.id;
+  const user = route.params.user;
+  const nome = route.params.nome;
+  const animal = route.params.dadosAnimal;
 
-    const getUser = () => {
-      for (const item of interessados) {
-        if (item.nome == dados.usuario)
-          return item.email
+  const getUser = () => {
+    for (const item of interessados) {
+      if (item.nome == dados.usuario) {
+        return item.email;
       }
-      
-    };
-    async function deletePedidos(){
-      const pedidosQuerySnapshot = await firestore()
-      .collection('usuarios').doc(user).collection('animais').doc(id).collection('pedidos')
-      .get();
-      const batch = firestore().batch();
-    
-      pedidosQuerySnapshot.forEach(documentSnapshot => {
-        batch.delete(documentSnapshot.ref);
-      });
-    
-      return batch.commit();
     }
+  };
+  async function deletePedidos() {
+    const pedidosQuerySnapshot = await firestore()
+      .collection('usuarios')
+      .doc(user)
+      .collection('animais')
+      .doc(id)
+      .collection('pedidos')
+      .get();
+    const batch = firestore().batch();
 
-    const onFinalizar = () => {
-      const para = getUser()
-      animal.userRef = para
-      deletePedidos().then(() => console.log('Pedidos deletados'))
-      firestore().collection('usuarios').doc(user).collection('animais').doc(id).delete()
+    pedidosQuerySnapshot.forEach((documentSnapshot) => {
+      batch.delete(documentSnapshot.ref);
+    });
+
+    return batch.commit();
+  }
+
+  const onFinalizar = () => {
+    const para = getUser();
+    animal.userRef = para;
+    deletePedidos().then(() => console.log('Pedidos deletados'));
+    firestore()
+      .collection('usuarios')
+      .doc(user)
+      .collection('animais')
+      .doc(id)
+      .delete()
       .then(() => {
         console.log('Animal deleted!');
       });
-      firestore().collection('usuarios/' + para + '/animais')
+    firestore()
+      .collection('usuarios/' + para + '/animais')
       .add({
         ...animal,
+        tipo: '',
       })
-      .then(() => {
+      .then(async () => {
+        await sendMessageAdocao(para, nome);
         console.log('Animal added!');
       });
-        navigation.navigate('Oba', {nome:nome});
-    }
+    navigation.navigate('Oba', {nome: nome});
+  };
 
   const [dados, setDados] = useState({
     processo: 'Adoção',
@@ -85,16 +98,16 @@ const Processo = ({route, navigation}) => {
 
   const handleRadioButton = (value, chave) => {
     setDados((prevState) => ({...prevState, [chave]: value}));
-    console.log(dados)
+    console.log(dados);
   };
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
-      <View>
+        <View>
           <Text style={styles.text}>SELECIONE O(S) ANIMAL(IS)</Text>
         </View>
-      <View style={styles.formGroup}>
+        <View style={styles.formGroup}>
           <View style={styles.formColumn}>
             <CheckBox
               value={checkSelected(nome, dados.pet)}
@@ -131,24 +144,22 @@ const Processo = ({route, navigation}) => {
         </View>
         <View style={styles.formGroup}>
           <View style={styles.formColumn}>
-        {interessados.map((item, index) => (
-            <RadioButton
-            style={styles.radioRow}
-            label={item.nome}
-            value={dados.usuario === item.nome}
-            chave={'usuario'}
-            handleChange={handleRadioButton}
-          />
+            {interessados.map((item, index) => (
+              <RadioButton
+                style={styles.radioRow}
+                label={item.nome}
+                value={dados.usuario === item.nome}
+                chave={'usuario'}
+                handleChange={handleRadioButton}
+              />
             ))}
-         </View>
+          </View>
         </View>
         <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => onFinalizar()}>
-                    <Text style={styles.textomenor}>FINALIZAR PROCESSO</Text>
-                </TouchableOpacity>
-            </View>
+          <TouchableOpacity style={styles.button} onPress={() => onFinalizar()}>
+            <Text style={styles.textomenor}>FINALIZAR PROCESSO</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -171,7 +182,7 @@ const styles = StyleSheet.create({
   radioRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10
+    marginTop: 10,
   },
   button: {
     backgroundColor: '#88c9bf',
