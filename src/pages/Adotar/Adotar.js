@@ -18,17 +18,17 @@ const Adotar = ({navigation}) => {
   const [listaIds, setListaIds] = useState([]);
 
   const onPetPress = (index) => {
-    console.log(listaAnimais[index])
-    navigation.navigate('Animal', {id:listaIds[index], dados:listaAnimais[index]});
-  };
-
-  const onButtonPress = () => {
-    console.log(listaAnimais._W[0]);
+    console.log(listaAnimais[index]);
+    navigation.navigate('Animal', {
+      id: listaIds[index],
+      dados: listaAnimais[index],
+    });
   };
 
   const fetchAnimais = async (animais, ids) => {
     const Documents = await firestore()
       .collectionGroup('animais')
+      .where('tipo', '==', 'adotar')
       .get()
       .then((querrySnapshot) => {
         querrySnapshot.forEach((documentSnapshot) => {
